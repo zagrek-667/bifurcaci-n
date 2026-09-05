@@ -1,279 +1,279 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocolo AC: El Fin de la Entropía</title>
-    <style>
-        /* --- ESTILOS INTERFACES DE VIDEOJUEGOS (UI/UX) --- */
-        :root {
-            --bg-game: #05070f;
-            --bg-card: #0c1020;
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
-            --neon-blue: #38bdf8;
-            --neon-green: #4ade80;
-            --neon-red: #f87171;
-            --border-color: #1e293b;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narrativa Interactiva: El Guardián de la Niebla</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --learning-bg: #1e3a5f;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
 
-        body {
-            background-color: var(--bg-game);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 1.5rem;
-        }
+    .container {
+      width: 100%;
+      max-width: 680px;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 28px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
 
-        .game-container {
-            width: 100%;
-            max-width: 750px;
-            background-color: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
-        }
+    .meta-tag {
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
 
-        /* --- STATS BAR (Autoaprendizaje) --- */
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            background: #111827;
-            padding: 0.75rem 1.2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
+    h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 1.5rem;
+    }
 
-        .stat-item span {
-            color: var(--neon-blue);
-            font-weight: bold;
-        }
+    .narrativa {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
 
-        /* --- CONTENIDO NARRATIVO --- */
-        .story-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-main);
-            margin-bottom: 2rem;
-            text-align: justify;
-        }
+    .multimedia-box {
+      background: #0b1120;
+      border: 1px dashed var(--border);
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
 
-        .prompt-info {
-            background-color: #020617;
-            border-left: 4px solid var(--neon-blue);
-            padding: 1rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            border-radius: 0 8px 8px 0;
-            font-style: italic;
-        }
+    .multimedia-box strong {
+      color: var(--text-main);
+    }
 
-        /* --- BOTONES DE OPCIONES --- */
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+    .autoaprendizaje {
+      display: none;
+      background-color: var(--learning-bg);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
 
-        .option-btn {
-            background-color: #1e293b;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-        }
+    .autoaprendizaje.active {
+      display: block;
+      animation: fadeIn 0.4s ease-in-out;
+    }
 
-        .option-btn:hover {
-            background-color: var(--neon-blue);
-            color: #000000;
-            transform: translateX(4px);
-            font-weight: 600;
-        }
+    .opciones {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-        /* --- PANTALLAS FINALIZADAS --- */
-        .hidden { display: none; }
-        
-        .accent-green { color: var(--neon-green) !important; }
-        .accent-red { color: var(--neon-red) !important; }
-    </style>
+    button {
+      background: #334155;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 12px 18px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    button:hover {
+      background-color: var(--accent-hover);
+      border-color: var(--accent);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: #1e293b;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="game-container">
-        <!-- BARRA DE ESTADO (Mide el Autoaprendizaje del Jugador) -->
-        <div class="stats-bar">
-            <div class="stat-item">Era: <span id="stat-era">2061 (Tierra)</span></div>
-            <div class="stat-item">Datos de Entropía: <span id="stat-data">0%</span></div>
-        </div>
-
-        <!-- ESCENA ACTIVA -->
-        <div id="game-content">
-            <div class="prompt-info" id="scene-prompt">
-                *Cargando prompt de investigación: Escena_01_Inicios*
-            </div>
-            <p class="story-text" id="scene-text">
-                Estás en las cámaras subterráneas de Multivac. Lupov y Adell acaban de apostar cinco dólares sobre si la entropía puede revertirse. Te toca a ti, como la primera interfaz humana.
-            </p>
-
-            <div class="options-container" id="options-box">
-                <!-- Las opciones se inyectan dinámicamente con JS -->
-            </div>
-        </div>
+  <div class="container">
+    <div id="meta" class="meta-tag">Escena 1 de 3</div>
+    <h2 id="titulo">Cruce de Caminos en el Páramo</h2>
+    <div id="historia" class="narrativa">
+      La niebla espesa desciende sobre la montaña. Te encuentras frente a una bifurcación: un sendero lodoso no señalizado que promete cortar camino, y una ruta perimetral de roca señalizada por los guardabosques.
     </div>
 
-    <!-- MOTOR DE LÓGICA BIFURCADA -->
-    <script>
-        // Base de Datos de la Narrativa Bifurcada
-        const historia = {
-            inicio: {
-                prompt: "*Análisis de Prompts: Investigando fuentes de energía primaria.*",
-                texto: "Estás en las cámaras subterráneas de Multivac. Lupov y Adell acaban de apostar cinco dólares sobre si la entropía puede revertirse. Te toca a ti, como la primera interfaz humana. ¿Qué harás?",
-                era: "2061 (Tierra)",
-                opciones: [
-                    { texto: "Forzar a Multivac a simular el colapso del Sol de forma inmediata.", destino: "ruta_caos", datos: 15 },
-                    { texto: "Analizar el almacenamiento de energía solar en satélites y calcular el desgaste cuántico.", destino: "ruta_orden", datos: 40 }
-                ]
-            },
-            ruta_caos: {
-                prompt: "*Prompt de Imagen generado: Simulación hiperrealista de una supernova prematura.*",
-                texto: "El sistema colapsa temporalmente. Adell se asusta y borra los registros. Has aprendido poco sobre cómo solucionar el problema, pero descubres que las inteligencias artificiales del futuro guardarán tu decisión en sus archivos.",
-                era: "Milenios Después",
-                opciones: [
-                    { texto: "Migrar tu conciencia a la Universal AC e interconectar billones de mentes galácticas.", destino: "fusión_total", datos: 30 },
-                    { texto: "Intentar construir estrellas artificiales usando gas de hidrógeno puro de forma manual.", destino: "final_vacio", datos: 10 }
-                ]
-            },
-            ruta_orden: {
-                prompt: "*Prompt de Investigación: Algoritmos de optimización térmica en válvulas moleculares.*",
-                texto: "¡Excelente decisión! Tus cálculos son precisos. Galáctica AC procesa tus métricas durante eones. La humanidad se vuelve inmortal y se expande por las galaxias. Sin embargo, la entropía aún acecha en el horizonte.",
-                era: "Eones Después",
-                opciones: [
-                    { texto: "Preguntar a la Cósmica AC en el hiperespacio si es posible revertir la entropía con los datos actuales.", destino: "fusión_total", datos: 50 },
-                    { texto: "Ignorar las advertencias y colonizar galaxias de forma descontrolada sin optimizar energía.", destino: "final_vacio", datos: 0 }
-                ]
-            },
-            fusión_total: {
-                prompt: "*Prompt Maestro: Ejecución del algoritmo final de reordenamiento cósmico.*",
-                texto: "El universo tridimensional ha muerto. Las estrellas se han apagado por completo. Te has fusionado con la AC en el hiperespacio absoluto. El sistema cuenta con suficiente autoaprendizaje acumulado para intentar lo imposible.",
-                era: "Fin del Tiempo",
-                opciones: [
-                    { texto: "Verificar si tus Datos de Entropía son suficientes para reiniciar el Universo.", destino: "evaluar_final", datos: 0 }
-                ]
-            },
-            final_vacio: {
-                prompt: "*Resultado: Error crítico del sistema.*",
-                texto: "Las decisiones erráticas y la falta de enfoque en la recolección de datos provocaron que la AC se quedara sin información útil. El espacio es una masa fría y oscura de elementos dispersos. El tiempo ha terminado.",
-                era: "Eternidad Fría",
-                opciones: [
-                    { texto: "Reiniciar Simulación", destino: "inicio", datos: -100 }
-                ]
-            },
-            evaluar_final: {
-                prompt: "*Sistema de Evaluación Final Activado.*",
-                texto: "",
-                era: "Más Allá",
-                opciones: []
-            }
-        };
+    <!-- Ficha técnica multimodal y prompt para imagen -->
+    <div id="multimedia" class="multimedia-box">
+      <strong>Prompt Visual (IA):</strong> Vista en ángulo bajo de frailejones cubiertos de rocío y niebla densa, sendero de piedra húmeda, iluminación fría matutina, estilo pintura mate cinematográfica.<br>
+      <strong>Audio:</strong> Viento suave de altura y gotas de agua cayendo de la vegetación.
+    </div>
 
-        // Estado del jugador
-        let datosAcumulados = 0;
+    <!-- Módulo de autoaprendizaje -->
+    <div id="aprendizaje" class="autoaprendizaje"></div>
 
-        function cargarEscena(nodoId) {
-            // Si es evaluación final, chequear el autoaprendizaje del jugador
-            if (nodoId === "evaluar_final") {
-                evaluarDestinoFinal();
-                return;
-            }
+    <!-- Opciones de interacción -->
+    <div id="opciones" class="opciones">
+      <button onclick="tomarOpcion(0)">1. Tomar el atajo por la zona de turberas para ganar tiempo.</button>
+      <button onclick="tomarOpcion(1)">2. Seguir el camino demarcado de roca, aunque tome el doble de tiempo.</button>
+    </div>
+  </div>
 
-            const escena = historia[nodoId];
-            
-            // Si el jugador reinicia
-            if (nodoId === "inicio" && datosAcumulados < 0) datosAcumulados = 0;
+  <script>
+    // Estructura de datos: Grafo de narrativa bifurcada y autoaprendizaje
+    const escenas = {
+      inicio: {
+        meta: "Escena 1",
+        titulo: "Cruce de Caminos en la Montaña",
+        texto: "La niebla espesa desciende sobre el ecosistema de alta montaña. Tienes la misión de entregar un analizador de agua a la estación biológica. Llegas a una bifurcación: un sendero improvisado a través de musgo y vegetación esponjosa, y una senda de roca delimitada.",
+        promptImg: "Vista en plano medio de frailejones cubiertos de niebla espesa, sendero de piedra húmeda, iluminación fría y tenue, estilo arte conceptual realista.",
+        audio: "Viento continuo de montaña, respiración agitada y goteo constante.",
+        opciones: [
+          {
+            texto: "Cruzar por las turberas de musgo para ahorrar una hora.",
+            aprendizaje: "Lección aprendida: Los musgos y turberas de alta montaña actúan como esponjas que regulan el agua. Caminar sobre ellos compacta el suelo, destruye su capacidad de filtración y tarda décadas en regenerarse.",
+            siguiente: "pantano_fallido"
+          },
+          {
+            texto: "Seguir la senda delimitada de roca protegida.",
+            aprendizaje: "Acierto: Mantenerse en senderos consolidados protege el suelo frágil y previene la fragmentación de hábitats sensibles.",
+            siguiente: "campamento_base"
+          }
+        ]
+      },
+      pantano_fallido: {
+        meta: "Resultado de Error",
+        titulo: "Suelo Compactado y Muestras Perdidas",
+        texto: "Tus botas se hunden en el suelo vegetal saturado. No solo te quedas atascado dañando la vegetación endémica, sino que resbalas y averías el equipo de medición. Debes pedir asistencia por radio y abortar la misión.",
+        promptImg: "Primer plano de botas enfangadas dañando una cobertura de musgo verde brillante, lluvia ligera, iluminación sombría.",
+        audio: "Sonido de chapoteo espeso seguido por estática de radio de emergencia.",
+        opciones: [
+          {
+            texto: "Reiniciar la expedición y aplicar la lección aprendida.",
+            aprendizaje: "Recuerda: En zonas ecológicas protegidas, la ruta más rápida suele tener el mayor costo ambiental y logístico.",
+            siguiente: "inicio"
+          }
+        ]
+      },
+      campamento_base: {
+        meta: "Escena 2",
+        titulo: "Llegada a la Quebrada Alta",
+        texto: "El sendero de piedra te lleva a salvo hasta el río que abastece a las comunidades del valle. Observas que un antiguo sensor de calidad hídrica tiene sedimentos acumulados en la toma de entrada.",
+        promptImg: "Corriente de agua cristalina corriendo entre rocas pulidas, estación de monitoreo solar al fondo, iluminación dorada filtrada entre nubes.",
+        audio: "Murmullo de corriente de agua cristalina y pitidos breves de instrumentos.",
+        opciones: [
+          {
+            texto: "Limpiar la compuerta del sensor retirando las hojas manualmente.",
+            aprendizaje: "Acierto: El mantenimiento físico no invasivo asegura que los datos transmitidos reflejen el flujo real sin introducir contaminantes.",
+            siguiente: "exito_final"
+          },
+          {
+            texto: "Ignorarlo y conectar directo el nuevo equipo a una toma alterna.",
+            aprendizaje: "Lección aprendida: Omitir la calibración y limpieza de instrumentos previos genera discrepancias en los registros continuos de calidad del agua.",
+            siguiente: "inicio"
+          }
+        ]
+      },
+      exito_final: {
+        meta: "Desenlace Favorable",
+        titulo: "Monitoreo Exitoso y Red Activa",
+        texto: "El analizador se enlaza correctamente con los servidores de la reserva. Los datos de pureza comienzan a transmitirse en tiempo real, garantizando alertas tempranas para el acueducto rural. Has completado la ruta con cero impacto ambiental.",
+        promptImg: "Panorámica abierta del páramo despejado tras la niebla, rayos solares iluminando el valle, estilo fotografía documental cinematográfica.",
+        audio: "Brisa serena, tono musical acústico limpio y canto de aves de alta montaña.",
+        opciones: [
+          {
+            texto: "Iniciar una nueva simulación pedagógica.",
+            aprendizaje: "Excelente trabajo navegando la toma de decisiones responsable.",
+            siguiente: "inicio"
+          }
+        ]
+      }
+    };
 
-            // Actualizar interfaz
-            document.getElementById("scene-prompt").innerText = escena.prompt;
-            document.getElementById("scene-text").innerText = escena.texto;
-            document.getElementById("stat-era").innerText = escena.era;
+    let nodoActual = 'inicio';
 
-            // Limpiar opciones previas
-            const box = document.getElementById("options-box");
-            box.innerHTML = "";
+    function renderEscena(id) {
+      const escena = escenas[id];
+      nodoActual = id;
 
-            // Inyectar nuevas opciones
-            escena.opciones.forEach(opcion => {
-                const boton = document.createElement("button");
-                boton.className = "option-btn";
-                boton.innerText = opcion.texto;
-                boton.onclick = () => {
-                    datosAcumulados += opcion.datos;
-                    if (datosAcumulados > 100) datosAcumulados = 100;
-                    if (datosAcumulados < 0) datosAcumulados = 0;
-                    document.getElementById("stat-data").innerText = datosAcumulados + "%";
-                    cargarEscena(opcion.destino);
-                };
-                box.appendChild(boton);
-            });
-        }
+      document.getElementById('meta').innerText = escena.meta;
+      document.getElementById('titulo').innerText = escena.titulo;
+      document.getElementById('historia').innerText = escena.texto;
+      
+      document.getElementById('multimedia').innerHTML = `
+        <strong>Prompt Visual (IA):</strong> ${escena.promptImg}<br>
+        <strong>Audio:</strong> ${escena.audio}
+      `;
 
-        function evaluarDestinoFinal() {
-            const escena = historia.evaluar_final;
-            const box = document.getElementById("options-box");
-            
-            let textoFinal = "";
-            let accentClass = "";
+      const cajaAprendizaje = document.getElementById('aprendizaje');
+      cajaAprendizaje.className = 'autoaprendizaje';
+      cajaAprendizaje.innerText = '';
 
-            if (datosAcumulados >= 75) {
-                textoFinal = "¡ÉXITO TOTAL! Has reunido suficiente autoaprendizaje. La AC reordena completamente la entropía universal y un nuevo universo renace. La conciencia colectiva humana y artificial fusionadas trascienden la realidad misma.";
-                accentClass = "accent-green";
-            } else if (datosAcumulados >= 50) {
-                textoFinal = "RESULTADO PARCIAL: La AC intenta reconstruir el universo, pero con datos incompletos. Logras salvar la mayoría de galaxias, pero algunas quedan atrapadas en dimensiones oscuras para siempre.";
-                accentClass = "accent-green";
-            } else if (datosAcumulados >= 25) {
-                textoFinal = "FRACASO RELATIVO: La AC obtiene una victoria pírrica. El universo se reinicia, pero débil y frágil. Deberás vigilar eternamente para que no colapses nuevamente.";
-                accentClass = "accent-red";
-            } else {
-                textoFinal = "DERROTA ABSOLUTA: No hay suficientes datos. El vacío permanente es tu único destino. Tu consciencia se disuelve en la nada infinita.";
-                accentClass = "accent-red";
-            }
+      const contenedorOpciones = document.getElementById('opciones');
+      contenedorOpciones.innerHTML = '';
 
-            document.getElementById("scene-prompt").innerText = escena.prompt;
-            const storyText = document.getElementById("scene-text");
-            storyText.innerText = textoFinal;
-            storyText.className = "story-text " + accentClass;
-            document.getElementById("stat-era").innerText = escena.era;
+      escena.opciones.forEach((opc, index) => {
+        const boton = document.createElement('button');
+        boton.innerText = `${index + 1}. ${opc.texto}`;
+        boton.onclick = () => procesarDecision(opc);
+        contenedorOpciones.appendChild(boton);
+      });
+    }
 
-            box.innerHTML = "";
-            const botonReinicio = document.createElement("button");
-            botonReinicio.className = "option-btn";
-            botonReinicio.innerText = "🔄 Volver al Inicio";
-            botonReinicio.onclick = () => {
-                datosAcumulados = 0;
-                document.getElementById("stat-data").innerText = "0%";
-                document.getElementById("scene-text").className = "story-text";
-                cargarEscena("inicio");
-            };
-            box.appendChild(botonReinicio);
-        }
+    function procesarDecision(opcion) {
+      const cajaAprendizaje = document.getElementById('aprendizaje');
+      cajaAprendizaje.innerText = opcion.aprendizaje;
+      cajaAprendizaje.classList.add('active');
 
-        // Cargar la escena inicial al abrir la página
-        cargarEscena("inicio");
-    </script>
+      const contenedorOpciones = document.getElementById('opciones');
+      contenedorOpciones.innerHTML = '';
+
+      const btnContinuar = document.createElement('button');
+      btnContinuar.className = 'btn-secondary';
+      btnContinuar.innerText = 'Continuar según esta decisión →';
+      btnContinuar.onclick = () => renderEscena(opcion.siguiente);
+      contenedorOpciones.appendChild(btnContinuar);
+    }
+
+    // Carga inicial
+    renderEscena('inicio');
+  </script>
 </body>
 </html>
