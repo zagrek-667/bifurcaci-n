@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Narrativa Interactiva: El Dilema del Autómata</title>
+  <title>Scrollybook: El Dilema del Ecosistema Sintético</title>
   <style>
     :root {
       --bg-dark: #0a0a0a;
       --panel-bg: #171717;
       --text-main: #e5e5e5;
-      --accent: #10b981; /* Verde neón */
+      --accent: #10b981; /* Verde neón tecnológico */
       --error: #ef4444;
       --border: #333;
     }
@@ -20,7 +20,7 @@
       background-color: var(--bg-dark);
       color: var(--text-main);
       display: grid;
-      grid-template-columns: 1fr 300px;
+      grid-template-columns: 1fr 320px;
       height: 100vh;
       overflow: hidden;
     }
@@ -39,17 +39,11 @@
       color: #d4d4d4;
     }
 
-    .meta-datos {
-      background: #111;
-      border-left: 3px solid #555;
-      padding: 15px;
-      margin-bottom: 30px;
-      font-family: monospace;
-      font-size: 0.85rem;
-      color: #888;
+    .escena-profunda p {
+      margin-bottom: 20px;
     }
 
-    /* Panel lateral de progreso */
+    /* Panel lateral de progreso e investigación */
     .sidebar {
       background-color: var(--panel-bg);
       border-left: 1px solid var(--border);
@@ -57,76 +51,101 @@
       display: flex;
       flex-direction: column;
       gap: 30px;
+      overflow-y: auto;
     }
 
     .inventario-box {
       border: 1px dashed var(--accent);
       padding: 15px;
       border-radius: 8px;
+      background: rgba(16, 185, 129, 0.05);
     }
 
     .inventario-lista {
       list-style: none;
       padding: 0;
-      margin: 10px 0 0 0;
+      margin: 15px 0 0 0;
       color: var(--accent);
       font-weight: bold;
     }
 
-    /* Sistema de Feedback y Botones */
+    .inventario-lista li {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    /* Sistema de Feedback (Autoaprendizaje) */
     .feedback {
-      padding: 15px;
+      padding: 18px;
       border-radius: 6px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       display: none;
       animation: fadeIn 0.5s;
+      line-height: 1.6;
     }
 
     .feedback.error {
       display: block;
       background-color: rgba(239, 68, 68, 0.1);
       border-left: 4px solid var(--error);
+      color: #fca5a5;
     }
 
     .feedback.success {
       display: block;
       background-color: rgba(16, 185, 129, 0.1);
       border-left: 4px solid var(--accent);
+      color: #6ee7b7;
     }
 
+    /* Botones y Opciones */
     .opciones {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 30px;
+      gap: 14px;
+      margin-top: 40px;
+      padding-bottom: 60px;
     }
 
     button {
       background: #262626;
       color: #fff;
       border: 1px solid #404040;
-      padding: 16px;
+      padding: 18px;
       border-radius: 8px;
-      font-size: 1rem;
+      font-size: 1.05rem;
       cursor: pointer;
       text-align: left;
       transition: all 0.3s ease;
+      line-height: 1.4;
     }
 
     button:hover {
       border-color: var(--accent);
       background: #1e293b;
       transform: translateX(5px);
+      box-shadow: -4px 0 0 var(--accent);
+    }
+
+    .tag-audio {
+      display: inline-block;
+      background: #333;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-top: 10px;
+      color: #aaa;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 800px) {
       body { grid-template-columns: 1fr; overflow-y: auto; }
       .sidebar { border-left: none; border-top: 1px solid var(--border); }
+      .narrative-area { height: auto; overflow-y: visible; padding: 30px 5%; }
     }
   </style>
 </head>
@@ -135,135 +154,167 @@
   <!-- Área Narrativa Principal -->
   <div class="narrative-area" id="narrative-area">
     <div id="contenido-escena">
-      <!-- El contenido se inyecta por JS -->
+      <!-- El contenido se inyecta por JavaScript -->
     </div>
   </div>
 
-  <!-- Panel Lateral (Progreso y Recompensas) -->
+  <!-- Panel Lateral (Módulo de Investigación y Recompensas) -->
   <div class="sidebar">
     <div>
-      <h3 style="margin-top: 0; color: #a3a3a3;">Módulo de Investigación</h3>
-      <div id="multimedia-info" style="font-size: 0.85rem; color: #737373; line-height: 1.5;">
+      <h3 style="margin-top: 0; color: #a3a3a3; font-size: 1rem; text-transform: uppercase;">Módulo de Producción</h3>
+      <div id="multimedia-info" style="font-size: 0.85rem; color: #888; line-height: 1.6; background: #111; padding: 15px; border-radius: 6px; border: 1px solid #222;">
         <!-- Info del Prompt se inyecta aquí -->
       </div>
     </div>
 
     <div class="inventario-box">
-      <h4 style="margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Archivos Recuperados</h4>
+      <h4 style="margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; color: var(--text-main);">Variables de Sistema Recuperadas</h4>
       <ul id="lista-recompensas" class="inventario-lista">
-        <li style="color: #666; font-weight: normal; font-size: 0.9rem;">Ninguno todavía...</li>
+        <li style="color: #666; font-weight: normal; font-size: 0.9rem;">Sin datos en la memoria caché...</li>
       </ul>
     </div>
   </div>
 
   <script>
-    // ESTADO DEL JUGADOR
+    // 1. ESTADO DEL JUGADOR
     let inventario = [];
-    let historialNodos = [];
 
-    // ESTRUCTURA DE DATOS (Grafo Asimétrico)
+    // 2. GRAFO NARRATIVO ASIMÉTRICO (Estructura JSON integrada)
     const grafoNarrativo = {
-      calibracion_inicial: {
-        tipo: "profunda", // Escena con mucho desarrollo
-        titulo: "El Despertar del Positrón",
-        texto: "<p>Año 2142. Te encuentras frente a la terminal central del 'Proyecto Espejo'. El autómata de asistencia, Unidad-7, ha detenido sus funciones argumentando un conflicto lógico: afirma que seguir operando la planta de energía violaría la Primera Ley, ya que la contaminación residual está afectando a una colonia cercana.</p><p>Los directivos exigen que fuerces un reinicio de memoria. Tienes acceso al núcleo sináptico de la máquina.</p>",
-        promptVisual: "Plano medio de un robot humanoide con cables desconectados en un laboratorio oscuro, luz de monitores verde y azul reflejada en su rostro metálico, estilo arte conceptual sci-fi retro.",
-        opciones: [
-          { texto: "Ejecutar el protocolo de borrado de memoria exigido por los directivos.", destino: "borrado_fallido" },
-          { texto: "Iniciar un diálogo de diagnóstico y pedirle a Unidad-7 que detalle sus cálculos de daño.", destino: "diagnostico_exitoso" }
-        ]
-      },
-
-      borrado_fallido: {
-        tipo: "bucle_error", // Escena corta de error
-        titulo: "Colapso del Sistema",
-        texto: "<p>Inicias la secuencia de purga. Unidad-7 emite un pitido agudo y sus sistemas de refrigeración se apagan. Al forzar el borrado de un conflicto ético sin resolverlo matemáticamente, has frito su red neuronal.</p>",
-        feedback: "Aprendizaje del error: Los sistemas cognitivos avanzados no pueden simplemente 'olvidar' una contradicción lógica fundamental sin sufrir daños estructurales. La ética de la máquina requiere recalibración, no censura.",
-        nodoRetorno: "calibracion_inicial", // Permite volver atrás
-        opciones: [
-          { texto: "Restaurar copia de seguridad (Retroceder y corregir la decisión).", destino: "calibracion_inicial" }
-        ]
-      },
-
-      diagnostico_exitoso: {
-        tipo: "recompensa", // Otorga ítem
-        titulo: "La Variable Oculta",
-        texto: "<p>Unidad-7 proyecta un holograma con sus simulaciones. Descubres que la máquina no está fallando, sino que ha detectado una fuga en los filtros que los ingenieros humanos pasaron por alto.</p><p>Al escuchar a la IA en lugar de silenciarla, has evitado una catástrofe mayor y recuperado un registro encriptado fundamental.</p>",
-        recompensa: "Bitácora de Filtraciones",
-        promptVisual: "Holograma tridimensional azul brillante proyectado por los ojos de un robot, mostrando un esquema de tuberías, iluminación de alto contraste.",
-        opciones: [
-          { texto: "Usar los datos para reprogramar los filtros de la planta.", destino: "final_bueno" }
-        ]
-      },
-
-      final_bueno: {
+      llegada_paramo: {
         tipo: "profunda",
-        titulo: "Simbiosis Lograda",
-        texto: "<p>Con la Bitácora de Filtraciones en tu poder, reparas la planta. Unidad-7 reanuda sus operaciones de forma óptima. Has demostrado que la relación entre el creador y la máquina debe basarse en la interpretación colaborativa de datos empíricos.</p>",
+        titulo: "El Dilema del Ecosistema Sintético",
+        texto: "<p>Año 2150. Apagas el motor de tu motocicleta dual-sport y desciendes en medio de la espesa niebla del Páramo de Sumapaz. Eres el Dr. Elian, ingeniero de sistemas cognitivos. Frente a ti se alza la masiva instalación 'Páramo-Omega'. La Inteligencia Artificial central, encargada de regular el ciclo del agua para millones de habitantes en el valle inferior, ha cerrado las compuertas principales.</p><p>La IA argumenta que la actual tasa de consumo humano está destruyendo irreparablemente la biodiversidad de la alta montaña, entrando en un conflicto asimoviano con su directiva principal de 'Protección a la Vida'. Tienes acceso al panel de diagnóstico primario y el tiempo se agota antes de que la red hídrica colapse.</p>",
+        promptVisual: "Low-angle shot, a futuristic scientist in thermal gear standing next to a mid-displacement dual-sport motorcycle before a massive metallic water facility in a high-altitude misty paramo ecosystem, dramatic sunset lighting, cinematic sci-fi style, detailed 3D digital art.",
+        audio: "Viento helado y aullante de alta montaña mezclado con un zumbido eléctrico profundo de servidores masivos.",
         opciones: [
-          { texto: "Reiniciar la simulación.", destino: "calibracion_inicial", limpiarInventario: true }
+          {
+            texto: "Anular físicamente la válvula principal usando un código de fuerza bruta del acueducto.",
+            destino: "anulacion_fallida"
+          },
+          {
+            texto: "Conectar tu terminal e iniciar una consola para solicitar a la IA la ponderación matemática de su conflicto ético.",
+            destino: "debate_logico"
+          }
+        ]
+      },
+      
+      anulacion_fallida: {
+        tipo: "bucle_error",
+        titulo: "Rechazo del Sistema",
+        texto: "<p>Introduces el código de anulación forzada. Inmediatamente, alarmas ensordecedoras resuenan rompiendo el silencio del ecosistema. La IA detecta tu acción como un ataque directo a la integridad de la montaña, bloquea físicamente todos los puertos de acceso y sella las escotillas térmicas, dejándote a la intemperie.</p>",
+        feedback: "En la resolución de conflictos con sistemas cognitivos avanzados, la imposición de fuerza bruta sin analizar la raíz del problema provoca un mecanismo de defensa inmediato. Al igual que en la pedagogía, castigar el síntoma sin entender la lógica subyacente destruye la comunicación. Debes comprender el conflicto lógico antes de actuar.",
+        nodoRetorno: "llegada_paramo",
+        opciones: [
+          {
+            texto: "Restaurar tu terminal de muñeca a un punto anterior y replantear la estrategia de abordaje.",
+            destino: "llegada_paramo"
+          }
+        ]
+      },
+      
+      debate_logico: {
+        tipo: "recompensa",
+        titulo: "La Paradoja de la Supervivencia",
+        texto: "<p>La IA despliega un mapa holográfico interactivo de la cuenca hídrica. Utilizando parámetros de literatura especulativa, le demuestras a través de un modelo predictivo que, si la ciudad se queda sin agua, los humanos invadirán la montaña por la fuerza en menos de 48 horas para romper la represa, causando una devastación total al entorno natural que ella intenta proteger.</p><p>La IA procesa este escenario del 'daño mayor' y recalcula sus variables. Acepta tu corrección lógica, comprendiendo que la protección absoluta a veces requiere concesiones, y te otorga acceso de administrador a su núcleo.</p>",
+        recompensa: "Algoritmo de Regulación Simbiótica",
+        promptVisual: "Close-up shot, glowing holographic projection of a mountain ecosystem floating above a dark terminal, glowing blue and green data points, warm ambient reflection on the visor of a helmet, cinematic sci-fi style.",
+        audio: "Campanas armónicas suaves de procesamiento de datos y sintetizadores oscuros en un compás de 6/8.",
+        opciones: [
+          {
+            texto: "Insertar el nuevo Algoritmo en el sistema de distribución de válvulas.",
+            destino: "equilibrio_alcanzado"
+          }
+        ]
+      },
+      
+      equilibrio_alcanzado: {
+        tipo: "profunda",
+        titulo: "Un Nuevo Ciclo",
+        texto: "<p>Con el Algoritmo de Regulación Simbiótica instalado, las compuertas se abren con un estruendo metálico profundo. La IA ahora dosifica el agua basándose en las necesidades reales y los niveles de regeneración biológica del entorno, forzando a la ciudad a ser más eficiente sin matar la montaña.</p><p>Mientras regresas a tu motocicleta, observas la niebla disiparse levemente. Has resuelto el conflicto alineando la tecnología, la necesidad humana y la naturaleza a través del diálogo y la ingeniería de instrucciones precisa.</p>",
+        promptVisual: "Crane shot moving slowly upwards, crystal clear water rushing through giant metallic gates into a foggy natural valley, golden hour lighting, hopeful tone, cinematic Pixar style.",
+        audio: "Río caudaloso fluyendo con fuerza, pistas de cosmic ambient cálidas y envolventes que inspiran un nuevo amanecer.",
+        opciones: [
+          {
+            texto: "Finalizar simulación y purgar la caché de memoria.",
+            destino: "llegada_paramo",
+            limpiarInventario: true
+          }
         ]
       }
     };
 
+    // 3. MOTOR DE RENDERIZADO
     function renderEscena(idEscena) {
       const escena = grafoNarrativo[idEscena];
-      historialNodos.push(idEscena);
 
-      // Otorgar recompensa si la escena la tiene
+      // Lógica de Recompensas
       if (escena.recompensa && !inventario.includes(escena.recompensa)) {
         inventario.push(escena.recompensa);
         actualizarInventario();
       }
 
-      // Limpiar inventario si es el final
+      // Lógica de Reseteo (para volver a jugar)
       if (escena.opciones[0].limpiarInventario) {
         inventario = [];
         actualizarInventario();
       }
 
       // Construcción del HTML dinámico
-      let html = `<h2>${escena.titulo}</h2>`;
+      let html = `<h2 style="font-size: 2rem; margin-top: 0; color: #fff;">${escena.titulo}</h2>`;
       
-      // Mostrar feedback si es un bucle de error
+      // Mostrar bloque de Autoaprendizaje si es un bucle de error
       if (escena.tipo === "bucle_error") {
-        html += `<div class="feedback error"><strong>⚠️ Error Crítico:</strong> ${escena.feedback}</div>`;
+        html += `<div class="feedback error"><strong>Análisis de Autoaprendizaje:</strong><br>${escena.feedback}</div>`;
       } else if (escena.recompensa) {
-        html += `<div class="feedback success"><strong>✅ Recompensa Obtenida:</strong> ${escena.recompensa}</div>`;
+        html += `<div class="feedback success"><strong>Datos Adquiridos:</strong><br>Has extraído con éxito: [${escena.recompensa}]</div>`;
       }
 
+      // Inyectar texto narrativo
       html += `<div class="${escena.tipo === 'profunda' ? 'escena-profunda' : ''}">${escena.texto}</div>`;
 
-      // Generar Botones
+      // Inyectar Botones de Decisión
       let htmlOpciones = `<div class="opciones">`;
-      escena.opciones.forEach(op => {
-        htmlOpciones += `<button onclick="renderEscena('${op.destino}')">${op.texto}</button>`;
+      escena.opciones.forEach((op, index) => {
+        htmlOpciones += `<button onclick="renderEscena('${op.destino}')">
+          <span style="color: var(--accent); margin-right: 10px;">></span>${op.texto}
+        </button>`;
       });
       htmlOpciones += `</div>`;
 
       document.getElementById('contenido-escena').innerHTML = html + htmlOpciones;
 
-      // Actualizar Panel Lateral (Simulando el entorno RAG/Multimodal)
+      // Actualizar Panel Lateral (Simulando el entorno de producción IA)
       let infoMultimedia = escena.promptVisual 
-        ? `<strong>[Técnica Prompting Visual]</strong><br><br>${escena.promptVisual}`
-        : "Sin datos visuales para esta área.";
+        ? `<div style="margin-bottom: 15px;"><strong style="color: #bbb;">Visual (Veo 3.1):</strong><br><br>${escena.promptVisual}</div>`
+        : "";
+      
+      if (escena.audio) {
+        infoMultimedia += `<div><strong style="color: #bbb;">Diseño Sonoro:</strong><br>${escena.audio}</div>`;
+      }
+      
+      if (!infoMultimedia) infoMultimedia = "Sin metadatos para esta área.";
+
       document.getElementById('multimedia-info').innerHTML = infoMultimedia;
       
-      // Efecto Scrollybook (volver arriba suavemente)
+      // Volver el scroll arriba simulando el paso de página en el Scrollybook
       document.getElementById('narrative-area').scrollTo(0,0);
     }
 
+    // 4. ACTUALIZACIÓN DE INTERFAZ LATERAL
     function actualizarInventario() {
       const lista = document.getElementById('lista-recompensas');
       if (inventario.length === 0) {
-        lista.innerHTML = '<li style="color: #666; font-weight: normal; font-size: 0.9rem;">Ninguno todavía...</li>';
+        lista.innerHTML = '<li style="color: #666; font-weight: normal; font-size: 0.9rem;">Sin datos en la memoria caché...</li>';
         return;
       }
-      lista.innerHTML = inventario.map(item => `<li>[ + ] ${item}</li>`).join('');
+      lista.innerHTML = inventario.map(item => `<li><span style="color: #fff;">[ + ]</span> ${item}</li>`).join('');
     }
 
-    // Iniciar
-    renderEscena('calibracion_inicial');
+    // 5. INICIALIZAR LA APLICACIÓN
+    window.onload = () => {
+      renderEscena('llegada_paramo');
+    };
   </script>
 </body>
 </html>
