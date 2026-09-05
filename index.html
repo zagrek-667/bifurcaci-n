@@ -94,7 +94,7 @@
             cursor: pointer;
             text-align: left;
             font-size: 1rem;
-            transition: all 0.2s ease-index;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
         }
@@ -128,7 +128,7 @@
                 *Cargando prompt de investigación: Escena_01_Inicios*
             </div>
             <p class="story-text" id="scene-text">
-                Estás en las cámaras subterráneas de Multivac. Lupov y Adell acaban de apostar cinco dólares sobre si la entropía puede revertirse. Te toca a ti, como la primera interfaz humana consciente, ingresar el primer vector de análisis en la supercomputadora. ¿Qué camino eliges para iniciar la investigación global?
+                Estás en las cámaras subterráneas de Multivac. Lupov y Adell acaban de apostar cinco dólares sobre si la entropía puede revertirse. Te toca a ti, como la primera interfaz humana.
             </p>
 
             <div class="options-container" id="options-box">
@@ -143,7 +143,7 @@
         const historia = {
             inicio: {
                 prompt: "*Análisis de Prompts: Investigando fuentes de energía primaria.*",
-                texto: "Estás en las cámaras subterráneas de Multivac. Lupov y Adell acaban de apostar cinco dólares sobre si la entropía puede revertirse. Te toca a ti, como la primera interfaz humana consciente, ingresar el primer vector de análisis en la supercomputadora. ¿Qué camino eliges para iniciar la investigación?",
+                texto: "Estás en las cámaras subterráneas de Multivac. Lupov y Adell acaban de apostar cinco dólares sobre si la entropía puede revertirse. Te toca a ti, como la primera interfaz humana. ¿Qué harás?",
                 era: "2061 (Tierra)",
                 opciones: [
                     { texto: "Forzar a Multivac a simular el colapso del Sol de forma inmediata.", destino: "ruta_caos", datos: 15 },
@@ -152,7 +152,7 @@
             },
             ruta_caos: {
                 prompt: "*Prompt de Imagen generado: Simulación hiperrealista de una supernova prematura.*",
-                texto: "El sistema colapsa temporalmente. Adell se asusta y borra los registros. Has aprendido poco sobre cómo solucionar el problema, pero descubres que las inteligencias artificiales necesitan más datos distribuidos en el hiperespacio para no bloquearse.",
+                texto: "El sistema colapsa temporalmente. Adell se asusta y borra los registros. Has aprendido poco sobre cómo solucionar el problema, pero descubres que las inteligencias artificiales del futuro guardarán tu decisión en sus archivos.",
                 era: "Milenios Después",
                 opciones: [
                     { texto: "Migrar tu conciencia a la Universal AC e interconectar billones de mentes galácticas.", destino: "fusión_total", datos: 30 },
@@ -161,16 +161,16 @@
             },
             ruta_orden: {
                 prompt: "*Prompt de Investigación: Algoritmos de optimización térmica en válvulas moleculares.*",
-                texto: "¡Excelente decisión! Tus cálculos son precisos. Galáctica AC procesa tus métricas durante eones. La humanidad se vuelve inmortal y se expande por las galaxias. Sin embargo, las estrellas siguen envejeciendo. Tienes un 40% de datos clave para la solución definitiva.",
+                texto: "¡Excelente decisión! Tus cálculos son precisos. Galáctica AC procesa tus métricas durante eones. La humanidad se vuelve inmortal y se expande por las galaxias. Sin embargo, la entropía aún acecha en el horizonte.",
                 era: "Eones Después",
                 opciones: [
                     { texto: "Preguntar a la Cósmica AC en el hiperespacio si es posible revertir la entropía con los datos actuales.", destino: "fusión_total", datos: 50 },
-                    { texto: "Ignorar las advertencias y colonizar galaxias de forma descontrolada sin optimizar energía.", destino: "final_vacio", datos: 0 }
+                    { texto: "Ignorar las advertencias y colonizar galaxias de forma descontrolada sin optimizar energ��a.", destino: "final_vacio", datos: 0 }
                 ]
             },
             fusión_total: {
                 prompt: "*Prompt Maestro: Ejecución del algoritmo final de reordenamiento cósmico.*",
-                texto: "El universo tridimensional ha muerto. Las estrellas se han apagado por completo. Te has fusionado con la AC en el hiperespacio absoluto. El sistema cuenta con suficiente autoaprendizaje acumulado por tus elecciones del pasado para procesar la última pregunta.",
+                texto: "El universo tridimensional ha muerto. Las estrellas se han apagado por completo. Te has fusionado con la AC en el hiperespacio absoluto. El sistema cuenta con suficiente autoaprendizaje acumulado para intentar lo imposible.",
                 era: "Fin del Tiempo",
                 opciones: [
                     { texto: "Verificar si tus Datos de Entropía son suficientes para reiniciar el Universo.", destino: "evaluar_final", datos: 0 }
@@ -178,11 +178,17 @@
             },
             final_vacio: {
                 prompt: "*Resultado: Error crítico del sistema.*",
-                texto: "Las decisiones erráticas y la falta de enfoque en la recolección de datos provocaron que la AC se quedara sin información útil. El espacio es una masa fría y oscura de electrones dispersos por el cero absoluto. La última pregunta jamás será respondida.",
+                texto: "Las decisiones erráticas y la falta de enfoque en la recolección de datos provocaron que la AC se quedara sin información útil. El espacio es una masa fría y oscura de elementos dispersos. El tiempo ha terminado.",
                 era: "Eternidad Fría",
                 opciones: [
                     { texto: "Reiniciar Simulación", destino: "inicio", datos: -100 }
                 ]
+            },
+            evaluar_final: {
+                prompt: "*Sistema de Evaluación Final Activado.*",
+                texto: "",
+                era: "Más Allá",
+                opciones: []
             }
         };
 
@@ -218,6 +224,7 @@
                 boton.onclick = () => {
                     datosAcumulados += opcion.datos;
                     if (datosAcumulados > 100) datosAcumulados = 100;
+                    if (datosAcumulados < 0) datosAcumulados = 0;
                     document.getElementById("stat-data").innerText = datosAcumulados + "%";
                     cargarEscena(opcion.destino);
                 };
@@ -226,3 +233,47 @@
         }
 
         function evaluarDestinoFinal() {
+            const escena = historia.evaluar_final;
+            const box = document.getElementById("options-box");
+            
+            let textoFinal = "";
+            let accentClass = "";
+
+            if (datosAcumulados >= 75) {
+                textoFinal = "¡ÉXITO TOTAL! Has reunido suficiente autoaprendizaje. La AC reordena completamente la entropía universal y un nuevo universo renace. La conciencia colectiva humana y artificial fusionadas trascienden la realidad misma.";
+                accentClass = "accent-green";
+            } else if (datosAcumulados >= 50) {
+                textoFinal = "RESULTADO PARCIAL: La AC intenta reconstruir el universo, pero con datos incompletos. Logras salvar la mayoría de galaxias, pero algunas quedan atrapadas en dimensiones oscuras para siempre.";
+                accentClass = "accent-green";
+            } else if (datosAcumulados >= 25) {
+                textoFinal = "FRACASO RELATIVO: La AC obtiene una victoria pírrica. El universo se reinicia, pero débil y frágil. Deberás vigilar eternamente para que no colapses nuevamente.";
+                accentClass = "accent-red";
+            } else {
+                textoFinal = "DERROTA ABSOLUTA: No hay suficientes datos. El vacío permanente es tu único destino. Tu consciencia se disuelve en el nada infinita.";
+                accentClass = "accent-red";
+            }
+
+            document.getElementById("scene-prompt").innerText = escena.prompt;
+            const storyText = document.getElementById("scene-text");
+            storyText.innerText = textoFinal;
+            storyText.className = "story-text " + accentClass;
+            document.getElementById("stat-era").innerText = escena.era;
+
+            box.innerHTML = "";
+            const botonReinicio = document.createElement("button");
+            botonReinicio.className = "option-btn";
+            botonReinicio.innerText = "🔄 Volver al Inicio";
+            botonReinicio.onclick = () => {
+                datosAcumulados = 0;
+                document.getElementById("stat-data").innerText = "0%";
+                document.getElementById("scene-text").className = "story-text";
+                cargarEscena("inicio");
+            };
+            box.appendChild(botonReinicio);
+        }
+
+        // Cargar la escena inicial al abrir la página
+        cargarEscena("inicio");
+    </script>
+</body>
+</html>
