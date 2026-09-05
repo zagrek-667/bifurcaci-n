@@ -3,277 +3,267 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Narrativa Interactiva: El Guardián de la Niebla</title>
+  <title>Narrativa Interactiva: El Dilema del Autómata</title>
   <style>
     :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --accent: #38bdf8;
-      --accent-hover: #0284c7;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #334155;
-      --learning-bg: #1e3a5f;
+      --bg-dark: #0a0a0a;
+      --panel-bg: #171717;
+      --text-main: #e5e5e5;
+      --accent: #10b981; /* Verde neón */
+      --error: #ef4444;
+      --border: #333;
     }
 
     body {
       margin: 0;
-      padding: 20px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg-color);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--bg-dark);
       color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      box-sizing: border-box;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .container {
-      width: 100%;
-      max-width: 680px;
-      background-color: var(--card-bg);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      padding: 28px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    /* Área principal de lectura (Scrollybook) */
+    .narrative-area {
+      padding: 60px 10%;
+      overflow-y: auto;
+      scroll-behavior: smooth;
     }
 
-    .meta-tag {
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-      font-weight: 600;
+    .escena-profunda {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      margin-bottom: 24px;
+      color: #d4d4d4;
     }
 
-    h2 {
-      margin-top: 0;
-      margin-bottom: 16px;
-      font-size: 1.5rem;
-    }
-
-    .narrativa {
-      font-size: 1.05rem;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .multimedia-box {
-      background: #0b1120;
-      border: 1px dashed var(--border);
-      padding: 12px 16px;
-      border-radius: 6px;
+    .meta-datos {
+      background: #111;
+      border-left: 3px solid #555;
+      padding: 15px;
+      margin-bottom: 30px;
+      font-family: monospace;
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: #888;
+    }
+
+    /* Panel lateral de progreso */
+    .sidebar {
+      background-color: var(--panel-bg);
+      border-left: 1px solid var(--border);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .inventario-box {
+      border: 1px dashed var(--accent);
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .inventario-lista {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Sistema de Feedback y Botones */
+    .feedback {
+      padding: 15px;
+      border-radius: 6px;
       margin-bottom: 20px;
-    }
-
-    .multimedia-box strong {
-      color: var(--text-main);
-    }
-
-    .autoaprendizaje {
       display: none;
-      background-color: var(--learning-bg);
-      border-left: 4px solid var(--accent);
-      padding: 14px 18px;
-      border-radius: 0 6px 6px 0;
-      margin-bottom: 20px;
-      font-size: 0.95rem;
-      line-height: 1.5;
+      animation: fadeIn 0.5s;
     }
 
-    .autoaprendizaje.active {
+    .feedback.error {
       display: block;
-      animation: fadeIn 0.4s ease-in-out;
+      background-color: rgba(239, 68, 68, 0.1);
+      border-left: 4px solid var(--error);
+    }
+
+    .feedback.success {
+      display: block;
+      background-color: rgba(16, 185, 129, 0.1);
+      border-left: 4px solid var(--accent);
     }
 
     .opciones {
       display: flex;
       flex-direction: column;
       gap: 12px;
+      margin-top: 30px;
     }
 
     button {
-      background: #334155;
-      color: var(--text-main);
-      border: 1px solid var(--border);
-      padding: 12px 18px;
-      border-radius: 6px;
-      font-size: 0.95rem;
+      background: #262626;
+      color: #fff;
+      border: 1px solid #404040;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 1rem;
       cursor: pointer;
       text-align: left;
-      transition: background-color 0.2s, border-color 0.2s;
+      transition: all 0.3s ease;
     }
 
     button:hover {
-      background-color: var(--accent-hover);
       border-color: var(--accent);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--accent);
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .btn-secondary:hover {
       background: #1e293b;
+      transform: translateX(5px);
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      body { grid-template-columns: 1fr; overflow-y: auto; }
+      .sidebar { border-left: none; border-top: 1px solid var(--border); }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div id="meta" class="meta-tag">Escena 1 de 3</div>
-    <h2 id="titulo">Cruce de Caminos en el Páramo</h2>
-    <div id="historia" class="narrativa">
-      La niebla espesa desciende sobre la montaña. Te encuentras frente a una bifurcación: un sendero lodoso no señalizado que promete cortar camino, y una ruta perimetral de roca señalizada por los guardabosques.
+  <!-- Área Narrativa Principal -->
+  <div class="narrative-area" id="narrative-area">
+    <div id="contenido-escena">
+      <!-- El contenido se inyecta por JS -->
+    </div>
+  </div>
+
+  <!-- Panel Lateral (Progreso y Recompensas) -->
+  <div class="sidebar">
+    <div>
+      <h3 style="margin-top: 0; color: #a3a3a3;">Módulo de Investigación</h3>
+      <div id="multimedia-info" style="font-size: 0.85rem; color: #737373; line-height: 1.5;">
+        <!-- Info del Prompt se inyecta aquí -->
+      </div>
     </div>
 
-    <!-- Ficha técnica multimodal y prompt para imagen -->
-    <div id="multimedia" class="multimedia-box">
-      <strong>Prompt Visual (IA):</strong> Vista en ángulo bajo de frailejones cubiertos de rocío y niebla densa, sendero de piedra húmeda, iluminación fría matutina, estilo pintura mate cinematográfica.<br>
-      <strong>Audio:</strong> Viento suave de altura y gotas de agua cayendo de la vegetación.
-    </div>
-
-    <!-- Módulo de autoaprendizaje -->
-    <div id="aprendizaje" class="autoaprendizaje"></div>
-
-    <!-- Opciones de interacción -->
-    <div id="opciones" class="opciones">
-      <button onclick="tomarOpcion(0)">1. Tomar el atajo por la zona de turberas para ganar tiempo.</button>
-      <button onclick="tomarOpcion(1)">2. Seguir el camino demarcado de roca, aunque tome el doble de tiempo.</button>
+    <div class="inventario-box">
+      <h4 style="margin: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Archivos Recuperados</h4>
+      <ul id="lista-recompensas" class="inventario-lista">
+        <li style="color: #666; font-weight: normal; font-size: 0.9rem;">Ninguno todavía...</li>
+      </ul>
     </div>
   </div>
 
   <script>
-    // Estructura de datos: Grafo de narrativa bifurcada y autoaprendizaje
-    const escenas = {
-      inicio: {
-        meta: "Escena 1",
-        titulo: "Cruce de Caminos en la Montaña",
-        texto: "La niebla espesa desciende sobre el ecosistema de alta montaña. Tienes la misión de entregar un analizador de agua a la estación biológica. Llegas a una bifurcación: un sendero improvisado a través de musgo y vegetación esponjosa, y una senda de roca delimitada.",
-        promptImg: "Vista en plano medio de frailejones cubiertos de niebla espesa, sendero de piedra húmeda, iluminación fría y tenue, estilo arte conceptual realista.",
-        audio: "Viento continuo de montaña, respiración agitada y goteo constante.",
+    // ESTADO DEL JUGADOR
+    let inventario = [];
+    let historialNodos = [];
+
+    // ESTRUCTURA DE DATOS (Grafo Asimétrico)
+    const grafoNarrativo = {
+      calibracion_inicial: {
+        tipo: "profunda", // Escena con mucho desarrollo
+        titulo: "El Despertar del Positrón",
+        texto: "<p>Año 2142. Te encuentras frente a la terminal central del 'Proyecto Espejo'. El autómata de asistencia, Unidad-7, ha detenido sus funciones argumentando un conflicto lógico: afirma que seguir operando la planta de energía violaría la Primera Ley, ya que la contaminación residual está afectando a una colonia cercana.</p><p>Los directivos exigen que fuerces un reinicio de memoria. Tienes acceso al núcleo sináptico de la máquina.</p>",
+        promptVisual: "Plano medio de un robot humanoide con cables desconectados en un laboratorio oscuro, luz de monitores verde y azul reflejada en su rostro metálico, estilo arte conceptual sci-fi retro.",
         opciones: [
-          {
-            texto: "Cruzar por las turberas de musgo para ahorrar una hora.",
-            aprendizaje: "Lección aprendida: Los musgos y turberas de alta montaña actúan como esponjas que regulan el agua. Caminar sobre ellos compacta el suelo, destruye su capacidad de filtración y tarda décadas en regenerarse.",
-            siguiente: "pantano_fallido"
-          },
-          {
-            texto: "Seguir la senda delimitada de roca protegida.",
-            aprendizaje: "Acierto: Mantenerse en senderos consolidados protege el suelo frágil y previene la fragmentación de hábitats sensibles.",
-            siguiente: "campamento_base"
-          }
+          { texto: "Ejecutar el protocolo de borrado de memoria exigido por los directivos.", destino: "borrado_fallido" },
+          { texto: "Iniciar un diálogo de diagnóstico y pedirle a Unidad-7 que detalle sus cálculos de daño.", destino: "diagnostico_exitoso" }
         ]
       },
-      pantano_fallido: {
-        meta: "Resultado de Error",
-        titulo: "Suelo Compactado y Muestras Perdidas",
-        texto: "Tus botas se hunden en el suelo vegetal saturado. No solo te quedas atascado dañando la vegetación endémica, sino que resbalas y averías el equipo de medición. Debes pedir asistencia por radio y abortar la misión.",
-        promptImg: "Primer plano de botas enfangadas dañando una cobertura de musgo verde brillante, lluvia ligera, iluminación sombría.",
-        audio: "Sonido de chapoteo espeso seguido por estática de radio de emergencia.",
+
+      borrado_fallido: {
+        tipo: "bucle_error", // Escena corta de error
+        titulo: "Colapso del Sistema",
+        texto: "<p>Inicias la secuencia de purga. Unidad-7 emite un pitido agudo y sus sistemas de refrigeración se apagan. Al forzar el borrado de un conflicto ético sin resolverlo matemáticamente, has frito su red neuronal.</p>",
+        feedback: "Aprendizaje del error: Los sistemas cognitivos avanzados no pueden simplemente 'olvidar' una contradicción lógica fundamental sin sufrir daños estructurales. La ética de la máquina requiere recalibración, no censura.",
+        nodoRetorno: "calibracion_inicial", // Permite volver atrás
         opciones: [
-          {
-            texto: "Reiniciar la expedición y aplicar la lección aprendida.",
-            aprendizaje: "Recuerda: En zonas ecológicas protegidas, la ruta más rápida suele tener el mayor costo ambiental y logístico.",
-            siguiente: "inicio"
-          }
+          { texto: "Restaurar copia de seguridad (Retroceder y corregir la decisión).", destino: "calibracion_inicial" }
         ]
       },
-      campamento_base: {
-        meta: "Escena 2",
-        titulo: "Llegada a la Quebrada Alta",
-        texto: "El sendero de piedra te lleva a salvo hasta el río que abastece a las comunidades del valle. Observas que un antiguo sensor de calidad hídrica tiene sedimentos acumulados en la toma de entrada.",
-        promptImg: "Corriente de agua cristalina corriendo entre rocas pulidas, estación de monitoreo solar al fondo, iluminación dorada filtrada entre nubes.",
-        audio: "Murmullo de corriente de agua cristalina y pitidos breves de instrumentos.",
+
+      diagnostico_exitoso: {
+        tipo: "recompensa", // Otorga ítem
+        titulo: "La Variable Oculta",
+        texto: "<p>Unidad-7 proyecta un holograma con sus simulaciones. Descubres que la máquina no está fallando, sino que ha detectado una fuga en los filtros que los ingenieros humanos pasaron por alto.</p><p>Al escuchar a la IA en lugar de silenciarla, has evitado una catástrofe mayor y recuperado un registro encriptado fundamental.</p>",
+        recompensa: "Bitácora de Filtraciones",
+        promptVisual: "Holograma tridimensional azul brillante proyectado por los ojos de un robot, mostrando un esquema de tuberías, iluminación de alto contraste.",
         opciones: [
-          {
-            texto: "Limpiar la compuerta del sensor retirando las hojas manualmente.",
-            aprendizaje: "Acierto: El mantenimiento físico no invasivo asegura que los datos transmitidos reflejen el flujo real sin introducir contaminantes.",
-            siguiente: "exito_final"
-          },
-          {
-            texto: "Ignorarlo y conectar directo el nuevo equipo a una toma alterna.",
-            aprendizaje: "Lección aprendida: Omitir la calibración y limpieza de instrumentos previos genera discrepancias en los registros continuos de calidad del agua.",
-            siguiente: "inicio"
-          }
+          { texto: "Usar los datos para reprogramar los filtros de la planta.", destino: "final_bueno" }
         ]
       },
-      exito_final: {
-        meta: "Desenlace Favorable",
-        titulo: "Monitoreo Exitoso y Red Activa",
-        texto: "El analizador se enlaza correctamente con los servidores de la reserva. Los datos de pureza comienzan a transmitirse en tiempo real, garantizando alertas tempranas para el acueducto rural. Has completado la ruta con cero impacto ambiental.",
-        promptImg: "Panorámica abierta del páramo despejado tras la niebla, rayos solares iluminando el valle, estilo fotografía documental cinematográfica.",
-        audio: "Brisa serena, tono musical acústico limpio y canto de aves de alta montaña.",
+
+      final_bueno: {
+        tipo: "profunda",
+        titulo: "Simbiosis Lograda",
+        texto: "<p>Con la Bitácora de Filtraciones en tu poder, reparas la planta. Unidad-7 reanuda sus operaciones de forma óptima. Has demostrado que la relación entre el creador y la máquina debe basarse en la interpretación colaborativa de datos empíricos.</p>",
         opciones: [
-          {
-            texto: "Iniciar una nueva simulación pedagógica.",
-            aprendizaje: "Excelente trabajo navegando la toma de decisiones responsable.",
-            siguiente: "inicio"
-          }
+          { texto: "Reiniciar la simulación.", destino: "calibracion_inicial", limpiarInventario: true }
         ]
       }
     };
 
-    let nodoActual = 'inicio';
+    function renderEscena(idEscena) {
+      const escena = grafoNarrativo[idEscena];
+      historialNodos.push(idEscena);
 
-    function renderEscena(id) {
-      const escena = escenas[id];
-      nodoActual = id;
+      // Otorgar recompensa si la escena la tiene
+      if (escena.recompensa && !inventario.includes(escena.recompensa)) {
+        inventario.push(escena.recompensa);
+        actualizarInventario();
+      }
 
-      document.getElementById('meta').innerText = escena.meta;
-      document.getElementById('titulo').innerText = escena.titulo;
-      document.getElementById('historia').innerText = escena.texto;
+      // Limpiar inventario si es el final
+      if (escena.opciones[0].limpiarInventario) {
+        inventario = [];
+        actualizarInventario();
+      }
+
+      // Construcción del HTML dinámico
+      let html = `<h2>${escena.titulo}</h2>`;
       
-      document.getElementById('multimedia').innerHTML = `
-        <strong>Prompt Visual (IA):</strong> ${escena.promptImg}<br>
-        <strong>Audio:</strong> ${escena.audio}
-      `;
+      // Mostrar feedback si es un bucle de error
+      if (escena.tipo === "bucle_error") {
+        html += `<div class="feedback error"><strong>⚠️ Error Crítico:</strong> ${escena.feedback}</div>`;
+      } else if (escena.recompensa) {
+        html += `<div class="feedback success"><strong>✅ Recompensa Obtenida:</strong> ${escena.recompensa}</div>`;
+      }
 
-      const cajaAprendizaje = document.getElementById('aprendizaje');
-      cajaAprendizaje.className = 'autoaprendizaje';
-      cajaAprendizaje.innerText = '';
+      html += `<div class="${escena.tipo === 'profunda' ? 'escena-profunda' : ''}">${escena.texto}</div>`;
 
-      const contenedorOpciones = document.getElementById('opciones');
-      contenedorOpciones.innerHTML = '';
-
-      escena.opciones.forEach((opc, index) => {
-        const boton = document.createElement('button');
-        boton.innerText = `${index + 1}. ${opc.texto}`;
-        boton.onclick = () => procesarDecision(opc);
-        contenedorOpciones.appendChild(boton);
+      // Generar Botones
+      let htmlOpciones = `<div class="opciones">`;
+      escena.opciones.forEach(op => {
+        htmlOpciones += `<button onclick="renderEscena('${op.destino}')">${op.texto}</button>`;
       });
+      htmlOpciones += `</div>`;
+
+      document.getElementById('contenido-escena').innerHTML = html + htmlOpciones;
+
+      // Actualizar Panel Lateral (Simulando el entorno RAG/Multimodal)
+      let infoMultimedia = escena.promptVisual 
+        ? `<strong>[Técnica Prompting Visual]</strong><br><br>${escena.promptVisual}`
+        : "Sin datos visuales para esta área.";
+      document.getElementById('multimedia-info').innerHTML = infoMultimedia;
+      
+      // Efecto Scrollybook (volver arriba suavemente)
+      document.getElementById('narrative-area').scrollTo(0,0);
     }
 
-    function procesarDecision(opcion) {
-      const cajaAprendizaje = document.getElementById('aprendizaje');
-      cajaAprendizaje.innerText = opcion.aprendizaje;
-      cajaAprendizaje.classList.add('active');
-
-      const contenedorOpciones = document.getElementById('opciones');
-      contenedorOpciones.innerHTML = '';
-
-      const btnContinuar = document.createElement('button');
-      btnContinuar.className = 'btn-secondary';
-      btnContinuar.innerText = 'Continuar según esta decisión →';
-      btnContinuar.onclick = () => renderEscena(opcion.siguiente);
-      contenedorOpciones.appendChild(btnContinuar);
+    function actualizarInventario() {
+      const lista = document.getElementById('lista-recompensas');
+      if (inventario.length === 0) {
+        lista.innerHTML = '<li style="color: #666; font-weight: normal; font-size: 0.9rem;">Ninguno todavía...</li>';
+        return;
+      }
+      lista.innerHTML = inventario.map(item => `<li>[ + ] ${item}</li>`).join('');
     }
 
-    // Carga inicial
-    renderEscena('inicio');
+    // Iniciar
+    renderEscena('calibracion_inicial');
   </script>
 </body>
 </html>
