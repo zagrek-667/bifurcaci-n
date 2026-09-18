@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scrollybook: El Dilema del Ecosistema Sintético</title>
+    <title>Páramo Omega | El dilema del ecosistema sintético</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0a0a0a;
@@ -18,6 +21,7 @@
       margin: 0;
       font-family: 'Segoe UI', system-ui, sans-serif;
       background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 12% 10%, rgba(129, 217, 208, 0.1), transparent 28%), linear-gradient(130deg, #07110f 0%, #0b1714 62%, #10251d 100%);
       color: var(--text-main);
       display: grid;
       grid-template-columns: 1fr 320px;
@@ -53,7 +57,6 @@
       gap: 30px;
       overflow-y: auto;
     }
-
     .inventario-box {
       border: 1px dashed var(--accent);
       padding: 15px;
@@ -93,7 +96,10 @@
 
     .feedback.success {
       display: block;
-      background-color: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(184, 227, 107, .35);
+      padding: 15px;
+      border-radius: 8px;
+      background: var(--accent-soft);
       border-left: 4px solid var(--accent);
       color: #6ee7b7;
     }
@@ -147,6 +153,41 @@
       .sidebar { border-left: none; border-top: 1px solid var(--border); }
       .narrative-area { height: auto; overflow-y: visible; padding: 30px 5%; }
     }
+
+    body { font-family: 'Manrope', sans-serif; background-image: radial-gradient(circle at 12% 10%, rgba(129,217,208,.1), transparent 28%), linear-gradient(130deg, #07110f, #10251d); }
+    .narrative-area { padding: 0 clamp(24px, 8vw, 128px) 80px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 28px 0 50px; border-bottom: 1px solid var(--border); }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: .75rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 800; }
+    .brand-mark { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 18px var(--accent); }
+    .status, .eyebrow { color: var(--muted); font: 500 .7rem 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .story-header { max-width: 780px; padding: 66px 0 42px; }
+    .story-header h1 { max-width: 720px; font-size: clamp(2.8rem, 6vw, 5.8rem); letter-spacing: -.065em; line-height: .97; margin: 18px 0 24px; font-weight: 800; }
+    .story-header p { max-width: 580px; color: var(--muted); line-height: 1.7; margin: 0; }
+    .visual-stage { position: relative; min-height: 260px; overflow: hidden; border: 1px solid var(--border); background: linear-gradient(155deg, rgba(129,217,208,.18), transparent 45%), #07110f; }
+    .visual-stage::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 18px, rgba(184,227,107,.06) 19px 20px); transform: skewY(-8deg) scale(1.2); }
+    .stage-label, .stage-caption { position: absolute; z-index: 1; left: 24px; color: var(--muted); font: .65rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .1em; }
+    .stage-label { top: 22px; } .stage-caption { bottom: 22px; max-width: 260px; color: #fff; font: .85rem 'Manrope', sans-serif; line-height: 1.5; text-transform: none; letter-spacing: 0; }
+    .stage-orbit { position: absolute; right: 12%; top: 24%; width: 130px; height: 130px; border: 1px solid rgba(184,227,107,.45); border-radius: 50%; box-shadow: 0 0 60px rgba(184,227,107,.08); }
+    .stage-orbit::after { content: ''; position: absolute; width: 7px; height: 7px; right: 7px; top: 29px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 16px var(--accent); }
+    .stage-mountain { position: absolute; right: 5%; bottom: -30px; width: 60%; height: 70%; background: linear-gradient(145deg, transparent 49%, rgba(129,217,208,.22) 50%, rgba(129,217,208,.05) 68%, transparent 69%); clip-path: polygon(0 100%,38% 22%,55% 58%,72% 0,100% 100%); }
+    .scene-meta { display: flex; gap: 16px; margin: 24px 0 18px; color: var(--muted); font: .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .08em; }
+    .scene-meta span:first-child { color: var(--accent); }
+    .scene-enter { animation: sceneEnter .65s ease both; }
+    @keyframes sceneEnter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .sidebar { padding: 30px 26px; background: #0b1b18; }
+    .side-kicker { color: var(--muted); font: 500 .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .12em; margin: 0 0 16px; }
+    .progress-nav { display: grid; gap: 8px; }
+    .progress-step { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; color: #668077; font-size: .75rem; text-align: left; background: none; border: 0; padding: 7px 0; cursor: pointer; transform: none; box-shadow: none; }
+    .progress-step:hover { color: var(--text-main); background: none; transform: none; box-shadow: none; }
+    .progress-step span { display: grid; place-items: center; width: 20px; height: 20px; border: 1px solid currentColor; border-radius: 50%; font: .62rem 'DM Mono', monospace; }
+    .progress-step.active { color: var(--accent); } .progress-step.visited { color: var(--cyan); }
+    .metadata { border-top: 1px solid var(--border); padding-top: 24px; }
+    #multimedia-info { color: var(--muted) !important; font-size: .78rem !important; line-height: 1.7 !important; background: none !important; border: 0 !important; padding: 0 !important; }
+    #multimedia-info strong { color: var(--text-main) !important; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+    .inventario-box { border: 1px solid rgba(184,227,107,.35); background: rgba(184,227,107,.14); }
+    button { background: rgba(255,255,255,.035); border-color: var(--border); border-radius: 2px; font-size: .95rem; }
+    button:hover { background: rgba(184,227,107,.1); box-shadow: -3px 0 0 var(--accent); }
+    @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(4, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } }
   </style>
 </head>
 <body>
@@ -161,7 +202,16 @@
   <!-- Panel Lateral (Módulo de Investigación y Recompensas) -->
   <div class="sidebar">
     <div>
-      <h3 style="margin-top: 0; color: #a3a3a3; font-size: 1rem; text-transform: uppercase;">Módulo de Producción</h3>
+      <p class="side-kicker">Ruta de la simulación</p>
+      <nav class="progress-nav" aria-label="Hitos narrativos">
+        <button class="progress-step active" data-scene="llegada_paramo" onclick="renderEscena('llegada_paramo')"><span>01</span> Llegada</button>
+        <button class="progress-step" data-scene="anulacion_fallida" onclick="renderEscena('anulacion_fallida')"><span>02</span> Rechazo</button>
+        <button class="progress-step" data-scene="debate_logico" onclick="renderEscena('debate_logico')"><span>03</span> Paradoja</button>
+        <button class="progress-step" data-scene="equilibrio_alcanzado" onclick="renderEscena('equilibrio_alcanzado')"><span>04</span> Equilibrio</button>
+      </nav>
+    </div>
+    <div class="metadata">
+      <p class="side-kicker">Módulo de producción</p>
       <div id="multimedia-info" style="font-size: 0.85rem; color: #888; line-height: 1.6; background: #111; padding: 15px; border-radius: 6px; border: 1px solid #222;">
         <!-- Info del Prompt se inyecta aquí -->
       </div>
@@ -178,7 +228,13 @@
   <script>
     // 1. ESTADO DEL JUGADOR
     let inventario = [];
-
+    const escenasVisitadas = new Set();
+    const etiquetasEscena = {
+      llegada_paramo: 'Hito 01 / Llegada',
+      anulacion_fallida: 'Hito 02 / Rechazo',
+      debate_logico: 'Hito 03 / Paradoja',
+      equilibrio_alcanzado: 'Hito 04 / Equilibrio'
+    };
     // 2. GRAFO NARRATIVO ASIMÉTRICO (Estructura JSON integrada)
     const grafoNarrativo = {
       llegada_paramo: {
@@ -247,6 +303,7 @@
     // 3. MOTOR DE RENDERIZADO
     function renderEscena(idEscena) {
       const escena = grafoNarrativo[idEscena];
+      escenasVisitadas.add(idEscena);
 
       // Lógica de Recompensas
       if (escena.recompensa && !inventario.includes(escena.recompensa)) {
@@ -261,7 +318,11 @@
       }
 
       // Construcción del HTML dinámico
-      let html = `<h2 style="font-size: 2rem; margin-top: 0; color: #fff;">${escena.titulo}</h2>`;
+      let html = `<div class="topbar"><div class="brand"><span class="brand-mark"></span>Páramo Omega</div><div class="status">Simulación activa · 2150</div></div>`;
+      if (idEscena === 'llegada_paramo') {
+        html += `<header class="story-header"><span class="eyebrow">Archivo de campo / Cuenca Sumapaz</span><h1>El dilema del<br>ecosistema sintético</h1><p>Una historia interactiva sobre agua, inteligencia y los límites de proteger la vida.</p></header>`;
+      }
+      html += `<div class="visual-stage"><span class="stage-label">Visualización de sistema · ${idEscena === 'equilibrio_alcanzado' ? 'flujo restaurado' : 'red hídrica en tensión'}</span><div class="stage-orbit"></div><div class="stage-mountain"></div><span class="stage-caption">${escena.audio || 'El sistema espera una decisión.'}</span></div><div class="scene-meta"><span>${etiquetasEscena[idEscena]}</span><span>Registro ${String(escenasVisitadas.size).padStart(2, '0')}</span></div><h2 style="font-size: 2rem; margin-top: 0; color: #fff;">${escena.titulo}</h2>`;
       
       // Mostrar bloque de Autoaprendizaje si es un bucle de error
       if (escena.tipo === "bucle_error") {
@@ -282,7 +343,11 @@
       });
       htmlOpciones += `</div>`;
 
-      document.getElementById('contenido-escena').innerHTML = html + htmlOpciones;
+      document.getElementById('contenido-escena').innerHTML = `<div class="scene-enter">${html + htmlOpciones}</div>`;
+      document.querySelectorAll('.progress-step').forEach((paso) => {
+        paso.classList.toggle('active', paso.dataset.scene === idEscena);
+        paso.classList.toggle('visited', escenasVisitadas.has(paso.dataset.scene) && paso.dataset.scene !== idEscena);
+      });
 
       // Actualizar Panel Lateral (Simulando el entorno de producción IA)
       let infoMultimedia = escena.promptVisual 
