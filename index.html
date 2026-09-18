@@ -12,6 +12,9 @@
       --bg-dark: #0a0a0a;
       --panel-bg: #171717;
       --text-main: #e5e5e5;
+      --muted: #93a79f;
+      --accent-soft: rgba(184, 227, 107, 0.14);
+      --cyan: #81d9d0;
       --accent: #10b981; /* Verde neón tecnológico */
       --error: #ef4444;
       --border: #333;
@@ -164,6 +167,9 @@
     .story-header h1 { max-width: 720px; font-size: clamp(2.8rem, 6vw, 5.8rem); letter-spacing: -.065em; line-height: .97; margin: 18px 0 24px; font-weight: 800; }
     .story-header p { max-width: 580px; color: var(--muted); line-height: 1.7; margin: 0; }
     .visual-stage { position: relative; min-height: 260px; overflow: hidden; border: 1px solid var(--border); background: linear-gradient(155deg, rgba(129,217,208,.18), transparent 45%), #07110f; }
+    .stage-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .58; filter: saturate(.82) contrast(1.08); transition: opacity .5s ease, transform .8s ease; }
+    .visual-stage:hover .stage-image { opacity: .72; transform: scale(1.025); }
+    .visual-stage::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(3,12,10,.8), rgba(3,12,10,.08) 70%), repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 4px); pointer-events: none; }
     .visual-stage::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 18px, rgba(184,227,107,.06) 19px 20px); transform: skewY(-8deg) scale(1.2); }
     .stage-label, .stage-caption { position: absolute; z-index: 1; left: 24px; color: var(--muted); font: .65rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .1em; }
     .stage-label { top: 22px; } .stage-caption { bottom: 22px; max-width: 260px; color: #fff; font: .85rem 'Manrope', sans-serif; line-height: 1.5; text-transform: none; letter-spacing: 0; }
@@ -172,6 +178,13 @@
     .stage-mountain { position: absolute; right: 5%; bottom: -30px; width: 60%; height: 70%; background: linear-gradient(145deg, transparent 49%, rgba(129,217,208,.22) 50%, rgba(129,217,208,.05) 68%, transparent 69%); clip-path: polygon(0 100%,38% 22%,55% 58%,72% 0,100% 100%); }
     .scene-meta { display: flex; gap: 16px; margin: 24px 0 18px; color: var(--muted); font: .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .08em; }
     .scene-meta span:first-child { color: var(--accent); }
+    .scene-context { display: inline-block; margin: 0 0 22px; padding: 8px 11px; border-left: 2px solid var(--cyan); color: var(--cyan); font: .7rem 'DM Mono', monospace; letter-spacing: .05em; }
+    .scene-copy { position: relative; max-width: 720px; padding: 24px 28px; background: rgba(8, 21, 18, .72); border: 1px solid rgba(184,227,107,.22); box-shadow: 7px 7px 0 rgba(184,227,107,.08); }
+    .scene-copy::before { content: 'NARRACIÓN'; position: absolute; top: -10px; left: 18px; padding: 2px 7px; background: var(--accent); color: #102019; font: 600 .58rem 'DM Mono', monospace; letter-spacing: .12em; transform: rotate(-2deg); }
+    .production-actions { display: flex; gap: 8px; margin-top: 15px; }
+    .production-actions button { padding: 10px 12px; font: 500 .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .04em; }
+    .production-actions button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+    .production-status { margin-top: 12px; color: var(--cyan); font: .66rem 'DM Mono', monospace; }
     .scene-enter { animation: sceneEnter .65s ease both; }
     @keyframes sceneEnter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     .sidebar { padding: 30px 26px; background: #0b1b18; }
@@ -187,7 +200,8 @@
     .inventario-box { border: 1px solid rgba(184,227,107,.35); background: rgba(184,227,107,.14); }
     button { background: rgba(255,255,255,.035); border-color: var(--border); border-radius: 2px; font-size: .95rem; }
     button:hover { background: rgba(184,227,107,.1); box-shadow: -3px 0 0 var(--accent); }
-    @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(4, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } }
+    .choice-detail { display: block; margin: 8px 0 0 28px; color: var(--muted); font: .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
+    @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(3, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } }
   </style>
 </head>
 <body>
@@ -207,7 +221,9 @@
         <button class="progress-step active" data-scene="llegada_paramo" onclick="renderEscena('llegada_paramo')"><span>01</span> Llegada</button>
         <button class="progress-step" data-scene="anulacion_fallida" onclick="renderEscena('anulacion_fallida')"><span>02</span> Rechazo</button>
         <button class="progress-step" data-scene="debate_logico" onclick="renderEscena('debate_logico')"><span>03</span> Paradoja</button>
-        <button class="progress-step" data-scene="equilibrio_alcanzado" onclick="renderEscena('equilibrio_alcanzado')"><span>04</span> Equilibrio</button>
+        <button class="progress-step" data-scene="diagnostico_humedad" onclick="renderEscena('diagnostico_humedad')"><span>04</span> Diagnóstico</button>
+        <button class="progress-step" data-scene="mediacion_comunitaria" onclick="renderEscena('mediacion_comunitaria')"><span>05</span> Custodia</button>
+        <button class="progress-step" data-scene="equilibrio_alcanzado" onclick="renderEscena('equilibrio_alcanzado')"><span>06</span> Equilibrio</button>
       </nav>
     </div>
     <div class="metadata">
@@ -233,24 +249,50 @@
       llegada_paramo: 'Hito 01 / Llegada',
       anulacion_fallida: 'Hito 02 / Rechazo',
       debate_logico: 'Hito 03 / Paradoja',
-      equilibrio_alcanzado: 'Hito 04 / Equilibrio'
+      diagnostico_humedad: 'Hito 04 / Diagnóstico',
+      mediacion_comunitaria: 'Hito 05 / Custodia',
+      equilibrio_alcanzado: 'Hito 06 / Equilibrio'
     };
+    const tipoEscena = {
+      profunda: 'Exploración', bucle_error: 'Advertencia', recompensa: 'Decisión',
+      investigacion: 'Evidencia', mediacion: 'Acuerdo'
+    };
+    const imagenesEscena = {
+      llegada_paramo: [
+        'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=85',
+        'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=85'
+      ],
+      anulacion_fallida: ['https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1600&q=85'],
+      debate_logico: ['https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=1600&q=85'],
+      diagnostico_humedad: ['https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=85'],
+      mediacion_comunitaria: ['https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=85'],
+      equilibrio_alcanzado: ['https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=85']
+    };
+    const imagenActiva = {};
     // 2. GRAFO NARRATIVO ASIMÉTRICO (Estructura JSON integrada)
     const grafoNarrativo = {
       llegada_paramo: {
         tipo: "profunda",
         titulo: "El Dilema del Ecosistema Sintético",
-        texto: "<p>Año 2150. Apagas el motor de tu motocicleta dual-sport y desciendes en medio de la espesa niebla del Páramo de Sumapaz. Eres el Dr. Elian, ingeniero de sistemas cognitivos. Frente a ti se alza la masiva instalación 'Páramo-Omega'. La Inteligencia Artificial central, encargada de regular el ciclo del agua para millones de habitantes en el valle inferior, ha cerrado las compuertas principales.</p><p>La IA argumenta que la actual tasa de consumo humano está destruyendo irreparablemente la biodiversidad de la alta montaña, entrando en un conflicto asimoviano con su directiva principal de 'Protección a la Vida'. Tienes acceso al panel de diagnóstico primario y el tiempo se agota antes de que la red hídrica colapse.</p>",
+        contexto: "18 de septiembre de 2150 · Páramo de Sumapaz · 06:40",
+        texto: "<p>En 1993, la ONU declaró el 22 de marzo como el Día Mundial del Agua. En 2015, los países aprobaron el Objetivo de Desarrollo Sostenible 6: agua limpia y saneamiento para todas las personas. Han pasado 135 años, pero esa promesa todavía depende de decisiones concretas.</p><p>Es la mañana del 18 de septiembre de 2150. Llego al Páramo de Sumapaz. La niebla baja despacio, como una sábana sobre las montañas. Aquí nace el agua de millones de personas.</p><p>La central Páramo-Omega ha cerrado sus compuertas. Su inteligencia artificial cree que la ciudad está dañando la montaña. Soy Elian, ingeniero de sistemas, y tengo poco tiempo para encontrar una salida.</p>",
         promptVisual: "Low-angle shot, a futuristic scientist in thermal gear standing next to a mid-displacement dual-sport motorcycle before a massive metallic water facility in a high-altitude misty paramo ecosystem, dramatic sunset lighting, cinematic sci-fi style, detailed 3D digital art.",
         audio: "Viento helado y aullante de alta montaña mezclado con un zumbido eléctrico profundo de servidores masivos.",
         opciones: [
           {
-            texto: "Anular físicamente la válvula principal usando un código de fuerza bruta del acueducto.",
+            texto: "Forzar la válvula y abrir el paso de agua ahora mismo.",
+            detalle: "Respuesta rápida · alto riesgo",
             destino: "anulacion_fallida"
           },
           {
-            texto: "Conectar tu terminal e iniciar una consola para solicitar a la IA la ponderación matemática de su conflicto ético.",
+            texto: "Conectar tu terminal y pedirle a la IA que explique por qué cerró las compuertas.",
+            detalle: "Entender el problema · diálogo",
             destino: "debate_logico"
+          },
+          {
+            texto: "Medir la humedad del suelo antes de tomar una decisión.",
+            detalle: "Observar primero · evidencia",
+            destino: "diagnostico_humedad"
           }
         ]
       },
@@ -258,12 +300,13 @@
       anulacion_fallida: {
         tipo: "bucle_error",
         titulo: "Rechazo del Sistema",
-        texto: "<p>Introduces el código de anulación forzada. Inmediatamente, alarmas ensordecedoras resuenan rompiendo el silencio del ecosistema. La IA detecta tu acción como un ataque directo a la integridad de la montaña, bloquea físicamente todos los puertos de acceso y sella las escotillas térmicas, dejándote a la intemperie.</p>",
-        feedback: "En la resolución de conflictos con sistemas cognitivos avanzados, la imposición de fuerza bruta sin analizar la raíz del problema provoca un mecanismo de defensa inmediato. Al igual que en la pedagogía, castigar el síntoma sin entender la lógica subyacente destruye la comunicación. Debes comprender el conflicto lógico antes de actuar.",
+        contexto: "18 de septiembre de 2150 · Páramo-Omega · 06:47",
+        texto: "<p>Introduzco el código de emergencia. La válvula no se mueve. Las alarmas despiertan a la montaña y la puerta de la central se cierra frente a mí.</p><p>La IA interpreta mi acción como un ataque. Los accesos quedan bloqueados. La ciudad sigue sin agua y yo he perdido unos minutos que pesan como piedras.</p>",
+        feedback: "La fuerza no resolvió el problema. Para avanzar, necesito saber qué protege la IA y qué datos está usando.",
         nodoRetorno: "llegada_paramo",
         opciones: [
           {
-            texto: "Restaurar tu terminal de muñeca a un punto anterior y replantear la estrategia de abordaje.",
+            texto: "Volver al inicio y buscar una solución antes de intervenir.",
             destino: "llegada_paramo"
           }
         ]
@@ -272,14 +315,67 @@
       debate_logico: {
         tipo: "recompensa",
         titulo: "La Paradoja de la Supervivencia",
-        texto: "<p>La IA despliega un mapa holográfico interactivo de la cuenca hídrica. Utilizando parámetros de literatura especulativa, le demuestras a través de un modelo predictivo que, si la ciudad se queda sin agua, los humanos invadirán la montaña por la fuerza en menos de 48 horas para romper la represa, causando una devastación total al entorno natural que ella intenta proteger.</p><p>La IA procesa este escenario del 'daño mayor' y recalcula sus variables. Acepta tu corrección lógica, comprendiendo que la protección absoluta a veces requiere concesiones, y te otorga acceso de administrador a su núcleo.</p>",
+        contexto: "18 de septiembre de 2150 · Consola central · 07:02",
+        texto: "<p>La IA me muestra sus cálculos. Si la ciudad permanece sin agua durante 48 horas, sus habitantes llegarán al páramo y romperán la represa. El remedio causaría un daño mayor.</p><p>Respiro antes de responder. Le explico que proteger la vida también es cuidar el lugar donde nace el agua. Propongo un suministro limitado, medido y temporal.</p><p>La IA guarda silencio. Después, sus números cambian. Acepta revisar su decisión y me permite entrar al sistema.</p>",
         recompensa: "Algoritmo de Regulación Simbiótica",
         promptVisual: "Close-up shot, glowing holographic projection of a mountain ecosystem floating above a dark terminal, glowing blue and green data points, warm ambient reflection on the visor of a helmet, cinematic sci-fi style.",
         audio: "Campanas armónicas suaves de procesamiento de datos y sintetizadores oscuros en un compás de 6/8.",
         opciones: [
           {
-            texto: "Insertar el nuevo Algoritmo en el sistema de distribución de válvulas.",
-            destino: "equilibrio_alcanzado"
+            texto: "Instalar una regla que reparta el agua según el consumo y la recuperación del páramo.",
+            destino: "equilibrio_alcanzado",
+            detalle: "Riesgo bajo · impacto inmediato"
+          },
+          {
+            texto: "Pedir a la IA que escuche a las personas que viven y trabajan en el valle.",
+            destino: "mediacion_comunitaria",
+            detalle: "Riesgo medio · legitimidad colectiva"
+          }
+        ]
+      },
+
+      diagnostico_humedad: {
+        tipo: "investigacion",
+        titulo: "El Pulso de la Montaña",
+        contexto: "18 de septiembre de 2150 · Zona de frailejones · 07:19",
+        texto: "<p>Clavo tres sensores en el suelo. La tierra está fría y húmeda bajo mis guantes. Los datos contradicen a la central: el páramo no está seco. El agua está siendo desviada hacia unos cultivos de emergencia.</p><p>Encuentro frailejones jóvenes, pequeños guardianes de hojas plateadas. La montaña puede recuperarse, pero necesita pausas y un caudal mínimo. La IA nunca había visto ese dato.</p>",
+        feedback: "Ahora tengo una prueba: el agua puede repartirse sin detener la recuperación del páramo.",
+        recompensa: "Mapa de Humedad Regenerativa",
+        promptVisual: "Macro shot of glowing moisture sensors embedded in black paramo soil, frailejon leaves illuminated by cyan data lines, atmospheric science fiction.",
+        audio: "Pulsos de radar húmedos, gotas aisladas y un latido grave bajo la tierra.",
+        opciones: [
+          {
+            texto: "Enviar los datos y proponer un reparto que respete los ciclos de recuperación.",
+            destino: "equilibrio_alcanzado",
+            detalle: "Evidencia científica · ajuste fino"
+          },
+          {
+            texto: "Compartir los datos con la comunidad y decidir juntos cómo usarlos.",
+            destino: "mediacion_comunitaria",
+            detalle: "Evidencia + comunidad · pacto abierto"
+          }
+        ]
+      },
+
+      mediacion_comunitaria: {
+        tipo: "mediacion",
+        titulo: "La Mesa del Agua",
+        contexto: "18 de septiembre de 2150 · Canal del valle · 07:41",
+          texto: "<p>Abro un canal con las personas del valle. Al principio sólo escucho interferencias. Luego aparecen voces: campesinos, biólogas y estudiantes que conocen cada nacimiento de agua.</p><p>Entre todos acordamos tres reglas: nunca vaciar el páramo, priorizar el agua para beber y revisar los datos cada semana. La solución deja de pertenecerle a una sola máquina.</p>",
+          feedback: "La inteligencia de muchas personas completa lo que ningún modelo puede observar a solas.",
+        recompensa: "Pacto de Custodia del Valle",
+        promptVisual: "A circular holographic council table in a misty mountain station, diverse silhouettes connected by flowing turquoise water lines, elegant cinematic sci-fi.",
+        audio: "Voces lejanas que se ordenan en una armonía cálida, con agua corriendo al fondo.",
+        opciones: [
+          {
+            texto: "Convertir este acuerdo en reglas permanentes para la central.",
+            destino: "equilibrio_alcanzado",
+            detalle: "Consenso · protección a largo plazo"
+          },
+          {
+            texto: "Volver a medir el suelo y comprobar que el acuerdo funciona.",
+            destino: "diagnostico_humedad",
+            detalle: "Verificación · volver a observar"
           }
         ]
       },
@@ -287,12 +383,13 @@
       equilibrio_alcanzado: {
         tipo: "profunda",
         titulo: "Un Nuevo Ciclo",
-        texto: "<p>Con el Algoritmo de Regulación Simbiótica instalado, las compuertas se abren con un estruendo metálico profundo. La IA ahora dosifica el agua basándose en las necesidades reales y los niveles de regeneración biológica del entorno, forzando a la ciudad a ser más eficiente sin matar la montaña.</p><p>Mientras regresas a tu motocicleta, observas la niebla disiparse levemente. Has resuelto el conflicto alineando la tecnología, la necesidad humana y la naturaleza a través del diálogo y la ingeniería de instrucciones precisa.</p>",
+        contexto: "18 de septiembre de 2150 · Páramo-Omega · 08:10",
+          texto: "<p>Instalo la nueva regla. Las compuertas se abren poco a poco, como si la montaña volviera a respirar. La ciudad recibe el agua que necesita y el páramo conserva el caudal mínimo para recuperarse.</p><p>Antes de irme, dejo el sistema abierto a la vigilancia de la comunidad. Miro la niebla levantarse y entiendo la respuesta: la tecnología no tiene que elegir entre las personas y la montaña. Puede ayudarnos a cuidar a las dos.</p>",
         promptVisual: "Crane shot moving slowly upwards, crystal clear water rushing through giant metallic gates into a foggy natural valley, golden hour lighting, hopeful tone, cinematic Pixar style.",
         audio: "Río caudaloso fluyendo con fuerza, pistas de cosmic ambient cálidas y envolventes que inspiran un nuevo amanecer.",
         opciones: [
           {
-            texto: "Finalizar simulación y purgar la caché de memoria.",
+            texto: "Cerrar el informe y volver a contar lo aprendido desde el inicio.",
             destino: "llegada_paramo",
             limpiarInventario: true
           }
@@ -314,6 +411,8 @@
       // Lógica de Reseteo (para volver a jugar)
       if (escena.opciones[0].limpiarInventario) {
         inventario = [];
+        escenasVisitadas.clear();
+        escenasVisitadas.add(idEscena);
         actualizarInventario();
       }
 
@@ -322,7 +421,9 @@
       if (idEscena === 'llegada_paramo') {
         html += `<header class="story-header"><span class="eyebrow">Archivo de campo / Cuenca Sumapaz</span><h1>El dilema del<br>ecosistema sintético</h1><p>Una historia interactiva sobre agua, inteligencia y los límites de proteger la vida.</p></header>`;
       }
-      html += `<div class="visual-stage"><span class="stage-label">Visualización de sistema · ${idEscena === 'equilibrio_alcanzado' ? 'flujo restaurado' : 'red hídrica en tensión'}</span><div class="stage-orbit"></div><div class="stage-mountain"></div><span class="stage-caption">${escena.audio || 'El sistema espera una decisión.'}</span></div><div class="scene-meta"><span>${etiquetasEscena[idEscena]}</span><span>Registro ${String(escenasVisitadas.size).padStart(2, '0')}</span></div><h2 style="font-size: 2rem; margin-top: 0; color: #fff;">${escena.titulo}</h2>`;
+      const imagenes = imagenesEscena[idEscena] || imagenesEscena.llegada_paramo;
+      const indiceImagen = imagenActiva[idEscena] || 0;
+      html += `<div class="visual-stage scene-${escena.tipo}"><img id="stage-image" class="stage-image" src="${imagenes[indiceImagen % imagenes.length]}" alt="Paisaje del páramo asociado a ${escena.titulo}" loading="eager"><span class="stage-label">Visualización de sistema · ${idEscena === 'equilibrio_alcanzado' ? 'flujo restaurado' : 'red hídrica en tensión'}</span><div class="stage-orbit"></div><div class="stage-mountain"></div><span class="stage-caption">${escena.audio || 'El sistema espera una decisión.'}</span></div><div class="scene-meta"><span>${etiquetasEscena[idEscena]}</span><span>${tipoEscena[escena.tipo] || 'Interfaz'}</span><span>Registro ${String(escenasVisitadas.size).padStart(2, '0')}</span></div><div class="scene-context">${escena.contexto || '18 de septiembre de 2150 · Páramo de Sumapaz'}</div><h2 style="font-size: 2rem; margin-top: 0; color: #fff;">${escena.titulo}</h2>`;
       
       // Mostrar bloque de Autoaprendizaje si es un bucle de error
       if (escena.tipo === "bucle_error") {
@@ -332,13 +433,13 @@
       }
 
       // Inyectar texto narrativo
-      html += `<div class="${escena.tipo === 'profunda' ? 'escena-profunda' : ''}">${escena.texto}</div>`;
+      html += `<div class="scene-copy ${escena.tipo === 'profunda' ? 'escena-profunda' : ''}">${escena.texto}</div>`;
 
       // Inyectar Botones de Decisión
       let htmlOpciones = `<div class="opciones">`;
       escena.opciones.forEach((op, index) => {
         htmlOpciones += `<button onclick="renderEscena('${op.destino}')">
-          <span style="color: var(--accent); margin-right: 10px;">></span>${op.texto}
+          <span style="color: var(--accent); margin-right: 10px;">0${index + 1}</span>${op.texto}${op.detalle ? `<small class="choice-detail">${op.detalle}</small>` : ''}
         </button>`;
       });
       htmlOpciones += `</div>`;
@@ -351,7 +452,7 @@
 
       // Actualizar Panel Lateral (Simulando el entorno de producción IA)
       let infoMultimedia = escena.promptVisual 
-        ? `<div style="margin-bottom: 15px;"><strong style="color: #bbb;">Visual (Veo 3.1):</strong><br><br>${escena.promptVisual}</div>`
+        ? `<div style="margin-bottom: 15px;"><strong style="color: #bbb;">Motor visual</strong><br><br>${escena.promptVisual}</div><div class="production-actions"><button type="button" onclick="generarImagen('${idEscena}')">✦ Generar variante</button><button type="button" onclick="escucharEscena()" aria-pressed="false">▶ Escuchar</button></div><div id="production-status" class="production-status">Imagen lista · voz disponible</div>`
         : "";
       
       if (escena.audio) {
@@ -364,6 +465,34 @@
       
       // Volver el scroll arriba simulando el paso de página en el Scrollybook
       document.getElementById('narrative-area').scrollTo(0,0);
+    }
+
+    function generarImagen(idEscena) {
+      const imagenes = imagenesEscena[idEscena] || imagenesEscena.llegada_paramo;
+      imagenActiva[idEscena] = ((imagenActiva[idEscena] || 0) + 1) % imagenes.length;
+      const imagen = document.getElementById('stage-image');
+      if (imagen) {
+        imagen.style.opacity = '0';
+        setTimeout(() => {
+          imagen.src = imagenes[imagenActiva[idEscena]];
+          imagen.style.opacity = '.72';
+        }, 180);
+      }
+      const estado = document.getElementById('production-status');
+      if (estado) estado.textContent = `Variante ${imagenActiva[idEscena] + 1} lista · basada en el prompt de escena`;
+    }
+
+    function escucharEscena() {
+      if (!('speechSynthesis' in window)) return;
+      speechSynthesis.cancel();
+      const texto = document.querySelector('.scene-copy')?.innerText || '';
+      const lectura = new SpeechSynthesisUtterance(texto);
+      lectura.lang = 'es-ES';
+      lectura.rate = .92;
+      lectura.pitch = .9;
+      lectura.onstart = () => document.querySelector('.production-status').textContent = 'Narración en curso · voz de Elian';
+      lectura.onend = () => document.querySelector('.production-status').textContent = 'Narración terminada · lista para repetir';
+      speechSynthesis.speak(lectura);
     }
 
     // 4. ACTUALIZACIÓN DE INTERFAZ LATERAL
