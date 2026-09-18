@@ -185,6 +185,14 @@
     .production-actions button { padding: 10px 12px; font: 500 .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .04em; }
     .production-actions button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
     .production-status { margin-top: 12px; color: var(--cyan); font: .66rem 'DM Mono', monospace; }
+    .frame-set { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding-top: 10px; }
+    .frame-set p { position: relative; min-height: 110px; margin: 0; padding: 24px 20px 20px; color: #17251f; background: #f4e7bd; border: 3px solid #132c25; box-shadow: 5px 5px 0 rgba(4, 12, 10, .45); font-size: .92rem; line-height: 1.65; transform: rotate(-.7deg); }
+    .frame-set p:nth-child(even) { background: #9fe0d2; transform: rotate(.8deg); }
+    .frame-set p:nth-child(3n) { background: #f4a38f; }
+    .frame-set p::before { content: 'ELIAN · REGISTRO'; position: absolute; top: -11px; left: 12px; padding: 3px 6px; color: #f4e7bd; background: #132c25; font: 500 .56rem 'DM Mono', monospace; letter-spacing: .1em; transform: rotate(-2deg); }
+    .frame-set p::after { content: ''; position: absolute; right: 10px; bottom: 9px; width: 20px; height: 20px; border-right: 2px solid rgba(19,44,37,.3); border-bottom: 2px solid rgba(19,44,37,.3); }
+    .sound-control { display: inline-flex; align-items: center; gap: 8px; color: var(--text-main); border-color: rgba(184,227,107,.45); padding: 9px 12px; font: 500 .66rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .05em; }
+    .sound-control.is-on { color: #17251f; background: var(--accent); border-color: var(--accent); }
     .scene-enter { animation: sceneEnter .65s ease both; }
     @keyframes sceneEnter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     .sidebar { padding: 30px 26px; background: #0b1b18; }
@@ -201,7 +209,12 @@
     button { background: rgba(255,255,255,.035); border-color: var(--border); border-radius: 2px; font-size: .95rem; }
     button:hover { background: rgba(184,227,107,.1); box-shadow: -3px 0 0 var(--accent); }
     .choice-detail { display: block; margin: 8px 0 0 28px; color: var(--muted); font: .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
-    @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(3, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } }
+    body { background-color: #102b25; background-image: radial-gradient(ellipse at 18% 12%, rgba(159,224,210,.22), transparent 25%), repeating-linear-gradient(112deg, rgba(244,231,189,.035) 0 1px, transparent 1px 22px), repeating-radial-gradient(ellipse at 80% 70%, transparent 0 18px, rgba(184,227,107,.045) 19px 20px); }
+    .topbar { border-bottom-color: rgba(244,231,189,.28); }
+    .brand-mark { background: #f4a38f; box-shadow: 0 0 18px #f4a38f; }
+    .scene-copy { background: rgba(7, 25, 21, .75); border-color: rgba(244,231,189,.32); box-shadow: 8px 8px 0 rgba(244,163,143,.2); }
+    .visual-stage { border: 3px solid #132c25; box-shadow: 8px 8px 0 rgba(244,163,143,.18); }
+    @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(3, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } .frame-set { grid-template-columns: 1fr; gap: 16px; } .frame-set p, .frame-set p:nth-child(even) { transform: rotate(0); } }
   </style>
 </head>
 <body>
@@ -269,6 +282,9 @@
       equilibrio_alcanzado: ['https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=85']
     };
     const imagenActiva = {};
+    let contextoAudio = null;
+    let nodosAudio = [];
+    let sonidoActivo = false;
     // 2. GRAFO NARRATIVO ASIMÉTRICO (Estructura JSON integrada)
     const grafoNarrativo = {
       llegada_paramo: {
@@ -417,7 +433,7 @@
       }
 
       // Construcción del HTML dinámico
-      let html = `<div class="topbar"><div class="brand"><span class="brand-mark"></span>Páramo Omega</div><div class="status">Simulación activa · 2150</div></div>`;
+      let html = `<div class="topbar"><div class="brand"><span class="brand-mark"></span>Páramo Omega</div><div class="status">Simulación activa · 2150</div><button id="sound-toggle" class="sound-control" type="button" onclick="togglePaisajeSonoro()" aria-pressed="false">◉ Activar paisaje sonoro</button></div>`;
       if (idEscena === 'llegada_paramo') {
         html += `<header class="story-header"><span class="eyebrow">Archivo de campo / Cuenca Sumapaz</span><h1>El dilema del<br>ecosistema sintético</h1><p>Una historia interactiva sobre agua, inteligencia y los límites de proteger la vida.</p></header>`;
       }
@@ -433,7 +449,7 @@
       }
 
       // Inyectar texto narrativo
-      html += `<div class="scene-copy ${escena.tipo === 'profunda' ? 'escena-profunda' : ''}">${escena.texto}</div>`;
+      html += `<div class="scene-copy ${escena.tipo === 'profunda' ? 'escena-profunda' : ''}"><div class="frame-set">${escena.texto}</div></div>`;
 
       // Inyectar Botones de Decisión
       let htmlOpciones = `<div class="opciones">`;
@@ -462,6 +478,7 @@
       if (!infoMultimedia) infoMultimedia = "Sin metadatos para esta área.";
 
       document.getElementById('multimedia-info').innerHTML = infoMultimedia;
+      actualizarControlSonoro();
       
       // Volver el scroll arriba simulando el paso de página en el Scrollybook
       document.getElementById('narrative-area').scrollTo(0,0);
@@ -495,6 +512,70 @@
       speechSynthesis.speak(lectura);
     }
 
+    function actualizarControlSonoro() {
+      const control = document.getElementById('sound-toggle');
+      if (!control) return;
+      control.classList.toggle('is-on', sonidoActivo);
+      control.setAttribute('aria-pressed', String(sonidoActivo));
+      control.textContent = sonidoActivo ? '◉ Paisaje sonoro activo' : '◉ Activar paisaje sonoro';
+    }
+
+    function iniciarPaisajeSonoro() {
+      if (sonidoActivo) return;
+      contextoAudio = contextoAudio || new (window.AudioContext || window.webkitAudioContext)();
+      const salida = contextoAudio.createGain();
+      salida.gain.value = .075;
+      salida.connect(contextoAudio.destination);
+
+      const viento = contextoAudio.createOscillator();
+      const vientoGain = contextoAudio.createGain();
+      viento.type = 'sine';
+      viento.frequency.value = 82;
+      vientoGain.gain.value = .35;
+      viento.connect(vientoGain).connect(salida);
+
+      const agua = contextoAudio.createOscillator();
+      const aguaGain = contextoAudio.createGain();
+      agua.type = 'triangle';
+      agua.frequency.value = 196;
+      aguaGain.gain.value = .09;
+      agua.connect(aguaGain).connect(salida);
+
+      const buffer = contextoAudio.createBuffer(1, contextoAudio.sampleRate * 2, contextoAudio.sampleRate);
+      const datos = buffer.getChannelData(0);
+      for (let i = 0; i < datos.length; i += 1) datos[i] = (Math.random() * 2 - 1) * .28;
+      const niebla = contextoAudio.createBufferSource();
+      const filtro = contextoAudio.createBiquadFilter();
+      const nieblaGain = contextoAudio.createGain();
+      niebla.buffer = buffer;
+      niebla.loop = true;
+      filtro.type = 'lowpass';
+      filtro.frequency.value = 780;
+      nieblaGain.gain.value = .2;
+      niebla.connect(filtro).connect(nieblaGain).connect(salida);
+      viento.start();
+      agua.start();
+      niebla.start();
+      nodosAudio = [viento, agua, niebla, salida];
+      sonidoActivo = true;
+      actualizarControlSonoro();
+    }
+
+    function detenerPaisajeSonoro() {
+      nodosAudio.forEach((nodo) => {
+        if (typeof nodo.stop === 'function') nodo.stop();
+        if (typeof nodo.disconnect === 'function') nodo.disconnect();
+      });
+      nodosAudio = [];
+      sonidoActivo = false;
+      actualizarControlSonoro();
+    }
+
+    function togglePaisajeSonoro() {
+      if (sonidoActivo) detenerPaisajeSonoro();
+      else iniciarPaisajeSonoro();
+    }
+
     // 4. ACTUALIZACIÓN DE INTERFAZ LATERAL
     function actualizarInventario() {
       const lista = document.getElementById('lista-recompensas');
@@ -508,6 +589,9 @@
     // 5. INICIALIZAR LA APLICACIÓN
     window.onload = () => {
       renderEscena('llegada_paramo');
+      document.addEventListener('pointerdown', (evento) => {
+        if (!evento.target.closest('#sound-toggle')) iniciarPaisajeSonoro();
+      }, { once: true });
     };
   </script>
 </body>
