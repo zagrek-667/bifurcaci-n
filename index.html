@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0a0a0a;
@@ -250,7 +251,7 @@
     .progress-step:hover { background: rgba(244,231,189,.1); }
     .narrative-area { padding-left: clamp(28px, 10vw, 170px); padding-right: clamp(28px, 7vw, 110px); }
     .story-header h1, h2 { font-family: 'Bricolage Grotesque', 'Manrope', sans-serif; }
-    .story-header h1 { max-width: 820px; font-size: clamp(3.2rem, 7vw, 7rem); line-height: .92; color: #f4e7bd; text-shadow: 4px 4px 0 rgba(244,163,143,.2); }
+    .story-header h1 { max-width: 820px; font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(3.4rem, 7vw, 7.3rem); line-height: .9; letter-spacing: -.03em; color: #f4e7bd; text-shadow: 4px 4px 0 rgba(244,163,143,.2); }
     .story-header p { font-size: 1rem; }
     .story-header p, .dialogue-bubble, .scene-copy .frame-set p { font-family: 'Newsreader', Georgia, serif; }
     .story-header p { font-size: 1.2rem; }
@@ -281,6 +282,9 @@
     .metadata, .inventario-box { border: 0; background: transparent; box-shadow: none; }
     #multimedia-info { background: transparent !important; }
     .scene-copy { background: rgba(7,25,21,.38); box-shadow: none; }
+    .sidebar, .metadata, .inventario-box, #multimedia-info { background: transparent !important; border: 0 !important; box-shadow: none !important; }
+    .sidebar { outline: 0; }
+    .topbar { border: 0 !important; }
     body { grid-template-columns: minmax(0, 1fr) minmax(220px, 270px); }
     .narrative-area { background: transparent; }
     .sidebar { padding-left: 12px; padding-right: 26px; }
