@@ -208,6 +208,11 @@
     #multimedia-info { color: var(--muted) !important; font-size: .78rem !important; line-height: 1.7 !important; background: none !important; border: 0 !important; padding: 0 !important; }
     #multimedia-info strong { color: var(--text-main) !important; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
     .inventario-box { border: 1px solid rgba(184,227,107,.35); background: rgba(184,227,107,.14); }
+    .reward-badge { display: inline-flex; align-items: center; gap: 9px; margin: 4px 0 22px; padding: 10px 13px; color: #17251f; background: linear-gradient(135deg, #f4e7bd, #b8e36b); border: 2px solid #132c25; box-shadow: 4px 4px 0 rgba(244,163,143,.35); font: 600 .7rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .05em; animation: rewardReveal .7s ease both; }
+    .reward-badge::before { content: '✦'; display: grid; place-items: center; width: 20px; height: 20px; color: #f4e7bd; background: #132c25; border-radius: 50%; font-size: .8rem; }
+    .inventory-new { animation: rewardPulse 1.2s ease both; }
+    @keyframes rewardReveal { from { opacity: 0; transform: translateY(8px) rotate(-2deg); } to { opacity: 1; transform: translateY(0) rotate(-1deg); } }
+    @keyframes rewardPulse { 0%, 100% { color: var(--accent); } 45% { color: #fff; text-shadow: 0 0 14px var(--accent); } }
     button { background: rgba(255,255,255,.035); border-color: var(--border); border-radius: 2px; font-size: .95rem; }
     button:hover { background: rgba(184,227,107,.1); box-shadow: -3px 0 0 var(--accent); }
     .choice-detail { display: block; margin: 8px 0 0 28px; color: var(--muted); font: .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
@@ -350,6 +355,11 @@
             texto: "Usar el canal de emergencia para pedir una explicación antes de intentar otra vez.",
             detalle: "Aprender del error · diálogo",
             destino: "debate_logico"
+          },
+          {
+            texto: "Salir de la central y buscar una lectura directa del agua en la montaña.",
+            detalle: "Cambiar de perspectiva · observación",
+            destino: "diagnostico_humedad"
           }
         ]
       },
@@ -373,6 +383,11 @@
             texto: "Pedir a la IA que escuche a las personas que viven y trabajan en el valle.",
             destino: "mediacion_comunitaria",
             detalle: "Riesgo medio · legitimidad colectiva"
+          },
+          {
+            texto: "Ejecutar una simulación de 48 horas antes de cambiar una sola válvula.",
+            destino: "diagnostico_humedad",
+            detalle: "Tiempo de análisis · riesgo controlado"
           }
         ]
       },
@@ -397,6 +412,11 @@
             texto: "Compartir los datos con la comunidad y decidir juntos cómo usarlos.",
             destino: "mediacion_comunitaria",
             detalle: "Evidencia + comunidad · pacto abierto"
+          },
+          {
+            texto: "Comparar la lectura del suelo con los registros históricos del páramo.",
+            destino: "debate_logico",
+            detalle: "Memoria del territorio · verificación"
           }
         ]
       },
@@ -421,6 +441,11 @@
             texto: "Volver a medir el suelo y comprobar que el acuerdo funciona.",
             destino: "diagnostico_humedad",
             detalle: "Verificación · volver a observar"
+          },
+          {
+            texto: "Pedir a la comunidad que elija quién vigilará el caudal cada semana.",
+            destino: "equilibrio_alcanzado",
+            detalle: "Responsabilidad compartida · largo plazo"
           }
         ]
       },
@@ -475,7 +500,7 @@
       if (escena.tipo === "bucle_error") {
         html += `<div class="feedback error"><strong>Análisis de Autoaprendizaje:</strong><br>${escena.feedback}</div>`;
       } else if (escena.recompensa) {
-        html += `<div class="feedback success"><strong>Datos Adquiridos:</strong><br>Has extraído con éxito: [${escena.recompensa}]</div>`;
+        html += `<div class="reward-badge" role="status">Premio encontrado · ${escena.recompensa}</div><div class="feedback success"><strong>Datos adquiridos:</strong><br>Ahora puedo usar esta evidencia para tomar una mejor decisión.</div>`;
       }
 
       // Inyectar texto narrativo
@@ -560,36 +585,41 @@
       salida.gain.value = .075;
       salida.connect(contextoAudio.destination);
 
-      const viento = contextoAudio.createOscillator();
-      const vientoGain = contextoAudio.createGain();
-      viento.type = 'sine';
-      viento.frequency.value = 82;
-      vientoGain.gain.value = .35;
-      viento.connect(vientoGain).connect(salida);
-
-      const agua = contextoAudio.createOscillator();
-      const aguaGain = contextoAudio.createGain();
-      agua.type = 'triangle';
-      agua.frequency.value = 196;
-      aguaGain.gain.value = .09;
-      agua.connect(aguaGain).connect(salida);
-
-      const buffer = contextoAudio.createBuffer(1, contextoAudio.sampleRate * 2, contextoAudio.sampleRate);
+      const buffer = contextoAudio.createBuffer(1, contextoAudio.sampleRate * 3, contextoAudio.sampleRate);
       const datos = buffer.getChannelData(0);
       for (let i = 0; i < datos.length; i += 1) datos[i] = (Math.random() * 2 - 1) * .28;
-      const niebla = contextoAudio.createBufferSource();
-      const filtro = contextoAudio.createBiquadFilter();
-      const nieblaGain = contextoAudio.createGain();
-      niebla.buffer = buffer;
-      niebla.loop = true;
-      filtro.type = 'lowpass';
-      filtro.frequency.value = 780;
-      nieblaGain.gain.value = .2;
-      niebla.connect(filtro).connect(nieblaGain).connect(salida);
+      const viento = contextoAudio.createBufferSource();
+      const vientoFiltro = contextoAudio.createBiquadFilter();
+      const vientoGain = contextoAudio.createGain();
+      const oleaje = contextoAudio.createOscillator();
+      const oleajeGain = contextoAudio.createGain();
+      viento.buffer = buffer;
+      viento.loop = true;
+      vientoFiltro.type = 'lowpass';
+      vientoFiltro.frequency.value = 900;
+      vientoGain.gain.value = .32;
+      viento.connect(vientoFiltro).connect(vientoGain).connect(salida);
+      oleaje.type = 'sine';
+      oleaje.frequency.value = .16;
+      oleajeGain.gain.value = 300;
+      oleaje.connect(oleajeGain).connect(vientoFiltro.frequency);
+
+      const piano = contextoAudio.createGain();
+      piano.gain.setValueAtTime(.001, contextoAudio.currentTime);
+      piano.gain.exponentialRampToValueAtTime(.16, contextoAudio.currentTime + .04);
+      piano.gain.exponentialRampToValueAtTime(.001, contextoAudio.currentTime + 2.6);
+      piano.connect(salida);
+      [261.63, 329.63, 392, 523.25].forEach((frecuencia, indice) => {
+        const nota = contextoAudio.createOscillator();
+        nota.type = 'sine';
+        nota.frequency.value = frecuencia;
+        nota.connect(piano);
+        nota.start(contextoAudio.currentTime + indice * .16);
+        nota.stop(contextoAudio.currentTime + 2.8);
+      });
       viento.start();
-      agua.start();
-      niebla.start();
-      nodosAudio = [viento, agua, niebla, salida];
+      oleaje.start();
+      nodosAudio = [viento, oleaje, salida];
       sonidoActivo = true;
       actualizarControlSonoro();
     }
@@ -618,7 +648,7 @@
         lista.innerHTML = '<li style="color: #666; font-weight: normal; font-size: 0.9rem;">Sin datos en la memoria caché...</li>';
         return;
       }
-      lista.innerHTML = inventario.map(item => `<li><span style="color: #fff;">[ + ]</span> ${item}</li>`).join('');
+      lista.innerHTML = inventario.map(item => `<li class="inventory-new"><span style="color: #fff;">✦</span> ${item}</li>`).join('');
     }
 
     // 5. INICIALIZAR LA APLICACIÓN
