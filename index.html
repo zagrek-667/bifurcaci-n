@@ -696,6 +696,9 @@
       const vientoGain = contextoAudio.createGain();
       const oleaje = contextoAudio.createOscillator();
       const oleajeGain = contextoAudio.createGain();
+      const servidor = contextoAudio.createOscillator();
+      const servidorGain = contextoAudio.createGain();
+      const servidorFiltro = contextoAudio.createBiquadFilter();
       viento.buffer = buffer;
       viento.loop = true;
       vientoFiltro.type = 'lowpass';
@@ -706,6 +709,12 @@
       oleaje.frequency.value = .16;
       oleajeGain.gain.value = 300;
       oleaje.connect(oleajeGain).connect(vientoFiltro.frequency);
+      servidor.type = 'sine';
+      servidor.frequency.value = 54;
+      servidorFiltro.type = 'lowpass';
+      servidorFiltro.frequency.value = 180;
+      servidorGain.gain.value = .16;
+      servidor.connect(servidorFiltro).connect(servidorGain).connect(salida);
 
       const piano = contextoAudio.createGain();
       piano.gain.setValueAtTime(.001, contextoAudio.currentTime);
@@ -723,7 +732,8 @@
       });
       viento.start();
       oleaje.start();
-      nodosAudio = [viento, oleaje, ...notasPiano, salida];
+      servidor.start();
+      nodosAudio = [viento, oleaje, servidor, ...notasPiano, salida];
       sonidoActivo = true;
       actualizarControlSonoro();
     }
