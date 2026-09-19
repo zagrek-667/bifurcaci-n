@@ -253,6 +253,8 @@
     .story-header p { font-size: 1rem; }
     .visual-stage { min-height: clamp(300px, 42vh, 470px); border: 0; border-radius: 22px 4px 22px 4px; box-shadow: 12px 12px 0 rgba(244,163,143,.18), inset 0 0 0 1px rgba(244,231,189,.18); }
     .scene-copy { max-width: 900px; padding: 30px 34px; border: 0; border-radius: 4px 20px 4px 20px; background: rgba(7,25,21,.58); box-shadow: 0 16px 42px rgba(2,12,9,.14); backdrop-filter: blur(9px); }
+    .scene-copy, .scene-copy p, .dialogue-bubble, .scene-title { position: relative; z-index: 2; }
+    .scene-copy p { display: block; visibility: visible; opacity: 1; }
     .frame-set { gap: 22px; }
     .frame-set p { min-height: 125px; border-width: 2px; border-radius: 3px 14px 3px 14px; background-image: repeating-linear-gradient(0deg, rgba(19,44,37,.035) 0 1px, transparent 1px 4px); }
     .sidebar { align-self: start; height: auto; min-height: 100vh; padding: 34px 22px; position: relative; }
@@ -547,6 +549,8 @@
       htmlOpciones += `</div>`;
 
       document.getElementById('contenido-escena').innerHTML = `<div class="scene-enter">${html + htmlOpciones}</div>`;
+      const stageImage = document.getElementById('stage-image');
+      if (stageImage) stageImage.addEventListener('error', () => stageImage.remove());
       document.querySelectorAll('.progress-step').forEach((paso) => {
         paso.classList.toggle('active', paso.dataset.scene === idEscena);
         paso.classList.toggle('visited', escenasVisitadas.has(paso.dataset.scene) && paso.dataset.scene !== idEscena);
@@ -689,12 +693,12 @@
     }
 
     // 5. INICIALIZAR LA APLICACIÓN
-    window.onload = () => {
+    document.addEventListener('DOMContentLoaded', () => {
       renderEscena('llegada_paramo');
       document.addEventListener('pointerdown', (evento) => {
         if (!evento.target.closest('#sound-toggle')) iniciarPaisajeSonoro();
       }, { once: true });
-    };
+    });
   </script>
 </body>
 </html>
