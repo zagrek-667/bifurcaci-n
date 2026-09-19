@@ -223,8 +223,6 @@
     .guide-step { min-width: 0; }
     .guide-icon { display: grid; place-items: center; width: 28px; height: 28px; margin-bottom: 8px; color: #17251f; background: var(--accent); border-radius: 50%; font-size: .75rem; }
     .guide-step strong { display: block; margin-bottom: 3px; color: #f4e7bd; font: 600 .72rem 'Manrope', sans-serif; }
-    .voice-select { max-width: 180px; padding: 9px 10px; color: var(--text-main); background: rgba(7,25,21,.72); border: 1px solid rgba(184,227,107,.25); border-radius: 2px; font: .68rem 'DM Mono', monospace; }
-    .voice-select:focus { outline: 1px solid var(--accent); }
     .dialogue-bubble { position: relative; max-width: 560px; margin: 18px 0 24px auto; padding: 16px 20px 16px 52px; color: #17251f; background: #f4e7bd; border: 3px solid #132c25; border-radius: 4px 22px 22px 22px; box-shadow: 5px 5px 0 rgba(244,163,143,.35); font-size: .95rem; line-height: 1.55; transform: rotate(.5deg); }
     .dialogue-bubble::before { content: 'ELIAN'; position: absolute; top: -12px; left: 15px; padding: 3px 7px; color: #f4e7bd; background: #132c25; font: 500 .58rem 'DM Mono', monospace; letter-spacing: .1em; }
     .dialogue-bubble::after { content: ''; position: absolute; left: 18px; bottom: -18px; width: 22px; height: 22px; background: #f4e7bd; border-right: 3px solid #132c25; border-bottom: 3px solid #132c25; transform: skew(-25deg) rotate(25deg); }
@@ -317,6 +315,13 @@
     .sidebar > * { background: transparent; }
     .side-kicker, .status, .eyebrow, .scene-meta, .scene-context, .choice-detail, .production-actions button, .production-status { font-family: 'DM Mono', monospace; }
     .scene-copy .frame-set p { font-weight: 400; letter-spacing: .01em; }
+    .scene-copy, .frame-set, .opciones, #multimedia-info { min-width: 0; box-sizing: border-box; }
+    .scene-copy { width: 100%; }
+    .frame-set, .opciones { width: 100%; }
+    .frame-set p, .opciones button, #multimedia-info { overflow-wrap: anywhere; }
+    .opciones button { box-sizing: border-box; width: 100%; }
+    .production-actions { flex-wrap: wrap; }
+    .production-actions button { min-width: 0; }
     .dialogue-bubble { font-size: 1.08rem; line-height: 1.5; }
     .scene-title { font-weight: 800; }
     .story-header h1 { font-weight: 800; }
@@ -324,7 +329,7 @@
     @media (max-width: 800px) { body { display: block; } .sidebar { position: relative; width: 100%; min-height: auto; padding-left: 5%; padding-right: 5%; overflow: visible; } .narrative-area { width: 100%; min-height: auto; } }
     @media (max-width: 800px) { .narrative-area { padding-left: 5%; padding-right: 5%; } .story-header h1 { font-size: clamp(3rem, 15vw, 5.5rem); } .sidebar { min-height: auto; } .progress-nav { grid-template-columns: repeat(3, 1fr); padding-left: 0; } .progress-nav::before, .progress-step::before { display: none; } .progress-step { grid-template-columns: 1fr; min-height: 58px; justify-items: center; } .progress-step img { width: 30px; height: 30px; } }
     @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(3, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } .progress-step img { width: 29px; height: 29px; } .frame-set { grid-template-columns: 1fr; gap: 16px; } .frame-set p, .frame-set p:nth-child(even) { transform: rotate(0); } }
-    @media (max-width: 560px) { .interaction-guide { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 10px; } .voice-select { max-width: none; flex: 1 1 100%; } }
+    @media (max-width: 560px) { .interaction-guide { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 10px; } }
   </style>
 </head>
 <body>
@@ -577,7 +582,7 @@
       // Construcción del HTML dinámico
       let html = `<div class="topbar"><div class="brand"><span class="brand-mark"></span>Páramo Omega</div><div class="status">Simulación activa · 2150</div><button id="sound-toggle" class="sound-control" type="button" onclick="togglePaisajeSonoro()" aria-pressed="false">◉ Activar paisaje sonoro</button></div>`;
       if (idEscena === 'llegada_paramo') {
-        html += `<header class="story-header"><span class="eyebrow">Archivo de campo / Cuenca Sumapaz</span><h1>El dilema del<br>ecosistema sintético</h1><p>Una historia interactiva sobre agua, inteligencia y los límites de proteger la vida.</p><div class="interaction-guide" aria-label="Cómo interactuar con la historia"><div class="guide-step"><span class="guide-icon">✦</span><strong>Genera</strong>crea una variante de imagen</div><div class="guide-step"><span class="guide-icon">◉</span><strong>Escucha</strong>activa el paisaje sonoro</div><div class="guide-step"><span class="guide-icon">Aa</span><strong>Elige voz</strong>selecciona la narración</div><div class="guide-step"><span class="guide-icon">⌁</span><strong>Explora</strong>mueve el cursor sobre la imagen</div><div class="guide-step"><span class="guide-icon">→</span><strong>Decide</strong>elige una ruta</div></div></header>`;
+        html += `<header class="story-header"><span class="eyebrow">Archivo de campo / Cuenca Sumapaz</span><h1>El dilema del<br>ecosistema sintético</h1><p>Una historia interactiva sobre agua, inteligencia y los límites de proteger la vida.</p><div class="interaction-guide" aria-label="Cómo interactuar con la historia"><div class="guide-step"><span class="guide-icon">✦</span><strong>Genera</strong>crea una variante de imagen</div><div class="guide-step"><span class="guide-icon">◉</span><strong>Escucha</strong>activa el paisaje sonoro</div><div class="guide-step"><span class="guide-icon">⌁</span><strong>Explora</strong>mueve el cursor sobre la imagen</div><div class="guide-step"><span class="guide-icon">→</span><strong>Decide</strong>elige una ruta</div></div></header>`;
       }
       const imagenes = imagenesEscena[idEscena] || imagenesEscena.llegada_paramo;
       const indiceImagen = imagenActiva[idEscena] || 0;
@@ -612,7 +617,7 @@
 
       // Actualizar Panel Lateral (Simulando el entorno de producción IA)
       let infoMultimedia = escena.promptVisual 
-        ? `<div style="margin-bottom: 15px;"><strong style="color: #bbb;">Motor visual</strong><br><br>${escena.promptVisual}</div><div class="production-actions"><button type="button" onclick="generarImagen('${idEscena}')">✦ Generar variante</button><button type="button" onclick="escucharEscena()" aria-pressed="false">▶ Escuchar</button><select id="voice-select" class="voice-select" aria-label="Elegir voz"><option value="">Cargando voces...</option></select></div><div id="production-status" class="production-status">Imagen lista · elige una voz o mueve el cursor sobre la imagen</div>`
+        ? `<div style="margin-bottom: 15px;"><strong style="color: #bbb;">Motor visual</strong><br><br>${escena.promptVisual}</div><div class="production-actions"><button type="button" onclick="generarImagen('${idEscena}')">✦ Generar variante</button><button type="button" onclick="escucharEscena()" aria-pressed="false">▶ Escuchar</button></div><div id="production-status" class="production-status">Imagen lista · mueve el cursor sobre la imagen o escucha la narración</div>`
         : "";
       
       if (escena.audio) {
@@ -622,7 +627,6 @@
       if (!infoMultimedia) infoMultimedia = "Sin metadatos para esta área.";
 
       document.getElementById('multimedia-info').innerHTML = infoMultimedia;
-      cargarVoces();
       actualizarControlSonoro();
       
       // Volver el scroll arriba simulando el paso de página en el Scrollybook
@@ -652,21 +656,11 @@
       lectura.lang = 'es-ES';
       lectura.rate = .92;
       lectura.pitch = .9;
-      const vozElegida = document.getElementById('voice-select')?.value;
-      const voz = speechSynthesis.getVoices().find((opcion) => opcion.name === vozElegida);
-      if (voz) lectura.voice = voz;
       lectura.onstart = () => document.querySelector('.production-status').textContent = 'Narración en curso · voz de Elian';
       lectura.onend = () => document.querySelector('.production-status').textContent = 'Narración terminada · lista para repetir';
       speechSynthesis.speak(lectura);
     }
 
-    function cargarVoces() {
-      const selector = document.getElementById('voice-select');
-      if (!selector || !('speechSynthesis' in window)) return;
-      const voces = speechSynthesis.getVoices().filter((voz) => voz.lang.startsWith('es'));
-      selector.innerHTML = (voces.length ? voces : speechSynthesis.getVoices()).map((voz) => `<option value="${voz.name}">${voz.name} · ${voz.lang}</option>`).join('');
-      if (!selector.options.length) selector.innerHTML = '<option value="">Voz del navegador</option>';
-    }
 
     function actualizarControlSonoro() {
       const control = document.getElementById('sound-toggle');
@@ -759,7 +753,6 @@
       document.addEventListener('pointerdown', (evento) => {
         if (!evento.target.closest('#sound-toggle')) iniciarPaisajeSonoro();
       }, { once: true });
-      if ('speechSynthesis' in window) speechSynthesis.addEventListener('voiceschanged', cargarVoces);
     });
   </script>
 </body>
