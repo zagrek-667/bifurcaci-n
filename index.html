@@ -218,6 +218,9 @@
     @keyframes rewardPulse { 0%, 100% { color: var(--accent); } 45% { color: #fff; text-shadow: 0 0 14px var(--accent); } }
     button { background: rgba(255,255,255,.035); border-color: var(--border); border-radius: 2px; font-size: .95rem; }
     button:hover { background: rgba(184,227,107,.1); box-shadow: -3px 0 0 var(--accent); }
+    button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .skip-link { position: fixed; z-index: 30; top: 12px; left: 12px; padding: 9px 12px; color: #17251f; background: var(--accent); transform: translateY(-160%); transition: transform .2s ease; font: 600 .72rem 'DM Mono', monospace; }
+    .skip-link:focus { transform: translateY(0); }
     .choice-detail { display: block; margin: 8px 0 0 28px; color: var(--muted); font: .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
     .interaction-guide { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; max-width: 900px; margin-top: 28px; padding: 14px 0; color: var(--muted); font: .68rem/1.45 'DM Mono', monospace; }
     .guide-step { min-width: 0; }
@@ -334,6 +337,8 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#contenido-escena">Saltar al relato</a>
+
   <!-- Área Narrativa Principal -->
   <div class="narrative-area" id="narrative-area">
     <div id="contenido-escena">
@@ -346,12 +351,12 @@
     <div>
       <p class="side-kicker">Ruta de la simulación</p>
       <nav class="progress-nav" aria-label="Hitos narrativos">
-        <button class="progress-step active" data-scene="llegada_paramo" onclick="renderEscena('llegada_paramo')"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=120&q=80" alt=""><span>01</span> Llegada</button>
-        <button class="progress-step" data-scene="anulacion_fallida" onclick="renderEscena('anulacion_fallida')"><img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=120&q=80" alt=""><span>02</span> Rechazo</button>
-        <button class="progress-step" data-scene="debate_logico" onclick="renderEscena('debate_logico')"><img src="https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=120&q=80" alt=""><span>03</span> Paradoja</button>
-        <button class="progress-step" data-scene="diagnostico_humedad" onclick="renderEscena('diagnostico_humedad')"><img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=120&q=80" alt="Vegetación andina"><span>04</span> Frailejones</button>
-        <button class="progress-step" data-scene="mediacion_comunitaria" onclick="renderEscena('mediacion_comunitaria')"><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=120&q=80" alt=""><span>05</span> Custodia</button>
-        <button class="progress-step" data-scene="equilibrio_alcanzado" onclick="renderEscena('equilibrio_alcanzado')"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=120&q=80" alt=""><span>06</span> Equilibrio</button>
+        <button type="button" class="progress-step active" data-scene="llegada_paramo" onclick="renderEscena('llegada_paramo')"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=120&q=80" alt=""><span>01</span> Llegada</button>
+        <button type="button" class="progress-step" data-scene="anulacion_fallida" onclick="renderEscena('anulacion_fallida')"><img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=120&q=80" alt=""><span>02</span> Rechazo</button>
+        <button type="button" class="progress-step" data-scene="debate_logico" onclick="renderEscena('debate_logico')"><img src="https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=120&q=80" alt=""><span>03</span> Paradoja</button>
+        <button type="button" class="progress-step" data-scene="diagnostico_humedad" onclick="renderEscena('diagnostico_humedad')"><img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=120&q=80" alt="Vegetación andina"><span>04</span> Frailejones</button>
+        <button type="button" class="progress-step" data-scene="mediacion_comunitaria" onclick="renderEscena('mediacion_comunitaria')"><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=120&q=80" alt=""><span>05</span> Custodia</button>
+        <button type="button" class="progress-step" data-scene="equilibrio_alcanzado" onclick="renderEscena('equilibrio_alcanzado')"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=120&q=80" alt=""><span>06</span> Equilibrio</button>
       </nav>
     </div>
     <div class="metadata">
@@ -586,7 +591,7 @@
       }
       const imagenes = imagenesEscena[idEscena] || imagenesEscena.llegada_paramo;
       const indiceImagen = imagenActiva[idEscena] || 0;
-      html += `<div class="visual-stage scene-${escena.tipo}"><img id="stage-image" class="stage-image" src="${imagenes[indiceImagen % imagenes.length]}" alt="Paisaje del páramo asociado a ${escena.titulo}" loading="eager"><span class="stage-label">Visualización de sistema · ${idEscena === 'equilibrio_alcanzado' ? 'flujo restaurado' : 'red hídrica en tensión'}</span><div class="stage-orbit"></div><div class="stage-mountain"></div><span class="stage-caption">${escena.audio || 'El sistema espera una decisión.'}</span></div><div class="scene-meta"><span>${etiquetasEscena[idEscena]}</span><span>${tipoEscena[escena.tipo] || 'Interfaz'}</span><span>Registro ${String(escenasVisitadas.size).padStart(2, '0')}</span></div><div class="scene-context">${escena.contexto || '18 de septiembre de 2150 · Páramo de Sumapaz'}</div><span class="narrative-label">Cuaderno de Elian · voz en primera persona</span><h2 class="scene-title">${escena.titulo}</h2>${escena.dialogo ? `<div class="dialogue-bubble">${escena.dialogo}</div>` : ''}`;
+      html += `<div class="visual-stage scene-${escena.tipo}"><img id="stage-image" class="stage-image" src="${imagenes[indiceImagen % imagenes.length]}" alt="Paisaje del páramo asociado a ${escena.titulo}" loading="eager"><span class="stage-label">Visualización de sistema · ${idEscena === 'equilibrio_alcanzado' ? 'flujo restaurado' : 'red hídrica en tensión'}</span><div class="stage-orbit"></div><div class="stage-mountain"></div><span class="stage-caption">${escena.audio || 'El sistema espera una decisión.'}</span></div><div class="scene-meta"><span>${etiquetasEscena[idEscena]}</span><span>${tipoEscena[escena.tipo] || 'Interfaz'}</span><span>Registro ${String(escenasVisitadas.size).padStart(2, '0')}</span></div><div class="scene-context">${escena.contexto || '18 de septiembre de 2150 · Páramo de Sumapaz'}</div><span class="narrative-label">Cuaderno de Elian · voz en primera persona</span><h2 class="scene-title" tabindex="-1">${escena.titulo}</h2>${escena.dialogo ? `<div class="dialogue-bubble">${escena.dialogo}</div>` : ''}`;
       
       // Mostrar bloque de Autoaprendizaje si es un bucle de error
       if (escena.tipo === "bucle_error") {
@@ -601,7 +606,7 @@
       // Inyectar Botones de Decisión
       let htmlOpciones = `<div class="decision-heading">Elige cómo continuar</div><div class="opciones">`;
       escena.opciones.forEach((op, index) => {
-        htmlOpciones += `<button onclick="renderEscena('${op.destino}')">
+        htmlOpciones += `<button type="button" aria-label="Decisión ${index + 1}: ${op.texto}" onclick="renderEscena('${op.destino}')">
           <span style="color: var(--accent); margin-right: 10px;">0${index + 1}</span>${op.texto}${op.detalle ? `<small class="choice-detail">${op.detalle}</small>` : ''}
         </button>`;
       });
@@ -613,7 +618,10 @@
       document.querySelectorAll('.progress-step').forEach((paso) => {
         paso.classList.toggle('active', paso.dataset.scene === idEscena);
         paso.classList.toggle('visited', escenasVisitadas.has(paso.dataset.scene) && paso.dataset.scene !== idEscena);
+        if (paso.dataset.scene === idEscena) paso.setAttribute('aria-current', 'step');
+        else paso.removeAttribute('aria-current');
       });
+      document.querySelector('.scene-title')?.focus({ preventScroll: true });
 
       // Actualizar Panel Lateral (Simulando el entorno de producción IA)
       let infoMultimedia = escena.promptVisual 
@@ -753,6 +761,12 @@
       document.addEventListener('pointerdown', (evento) => {
         if (!evento.target.closest('#sound-toggle')) iniciarPaisajeSonoro();
       }, { once: true });
+      document.addEventListener('keydown', (evento) => {
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+        const indice = Number(evento.key) - 1;
+        const decisiones = document.querySelectorAll('.opciones button');
+        if (indice >= 0 && indice < decisiones.length) decisiones[indice].click();
+      });
     });
   </script>
 </body>
