@@ -302,8 +302,10 @@
     .dialogue-bubble { border: 0; box-shadow: none; }
     .progress-step img { border: 0; }
     body { grid-template-columns: minmax(0, 1fr) minmax(220px, 270px); }
+    body { display: block; min-height: 100vh; height: auto; overflow-x: hidden; overflow-y: auto; }
     .narrative-area { background: transparent; }
-    .sidebar { padding-left: 12px; padding-right: 26px; }
+    .narrative-area { width: 100%; min-height: 100vh; box-sizing: border-box; overflow: visible; }
+    .sidebar { position: fixed; z-index: 10; top: 0; right: 0; width: min(270px, 24vw); min-height: 100vh; box-sizing: border-box; padding-left: 12px; padding-right: 26px; overflow-y: auto; }
     .sidebar > * { background: transparent; }
     .side-kicker, .status, .eyebrow, .scene-meta, .scene-context, .choice-detail, .production-actions button, .production-status { font-family: 'DM Mono', monospace; }
     .scene-copy .frame-set p { font-weight: 400; letter-spacing: .01em; }
@@ -311,7 +313,7 @@
     .scene-title { font-weight: 800; }
     .story-header h1 { font-weight: 800; }
     .progress-step { font-family: 'Manrope', sans-serif; font-weight: 600; }
-    @media (max-width: 800px) { body { display: block; } .sidebar { padding-left: 5%; padding-right: 5%; } }
+    @media (max-width: 800px) { body { display: block; } .sidebar { position: relative; width: 100%; min-height: auto; padding-left: 5%; padding-right: 5%; overflow: visible; } .narrative-area { min-height: auto; } }
     @media (max-width: 800px) { .narrative-area { padding-left: 5%; padding-right: 5%; } .story-header h1 { font-size: clamp(3rem, 15vw, 5.5rem); } .sidebar { min-height: auto; } .progress-nav { grid-template-columns: repeat(3, 1fr); padding-left: 0; } .progress-nav::before, .progress-step::before { display: none; } .progress-step { grid-template-columns: 1fr; min-height: 58px; justify-items: center; } .progress-step img { width: 30px; height: 30px; } }
     @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(3, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } .progress-step img { width: 29px; height: 29px; } .frame-set { grid-template-columns: 1fr; gap: 16px; } .frame-set p, .frame-set p:nth-child(even) { transform: rotate(0); } }
   </style>
