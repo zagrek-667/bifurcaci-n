@@ -159,7 +159,7 @@
 
     body { font-family: 'Manrope', sans-serif; background-image: radial-gradient(circle at 12% 10%, rgba(129,217,208,.1), transparent 28%), linear-gradient(130deg, #07110f, #10251d); }
     .narrative-area { padding: 0 clamp(24px, 8vw, 128px) 80px; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 28px 0 50px; border-bottom: 1px solid var(--border); }
+    .topbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding: 28px 0 50px; border-bottom: 1px solid var(--border); }
     .brand { display: flex; align-items: center; gap: 12px; font-size: .75rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 800; }
     .brand-mark { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 18px var(--accent); }
     .status, .eyebrow { color: var(--muted); font: 500 .7rem 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
@@ -198,7 +198,9 @@
     .sidebar { padding: 30px 26px; background: rgba(7,27,23,.88); backdrop-filter: blur(16px); }
     .side-kicker { color: var(--muted); font: 500 .68rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .12em; margin: 0 0 16px; }
     .progress-nav { display: grid; gap: 8px; }
-    .progress-step { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; color: #668077; font-size: .75rem; text-align: left; background: none; border: 0; padding: 7px 0; cursor: pointer; transform: none; box-shadow: none; }
+    .progress-step { display: grid; grid-template-columns: 34px 22px 1fr; gap: 9px; align-items: center; color: #9bb5a9; font-size: .75rem; text-align: left; background: none; border: 0; padding: 7px 0; cursor: pointer; transform: none; box-shadow: none; }
+    .progress-step img { width: 34px; height: 34px; object-fit: cover; border-radius: 50%; opacity: .72; border: 1px solid rgba(244,231,189,.3); filter: saturate(.7); }
+    .progress-step.active img, .progress-step:hover img { opacity: 1; border-color: var(--accent); filter: saturate(1); }
     .progress-step:hover { color: var(--text-main); background: none; transform: none; box-shadow: none; }
     .progress-step span { display: grid; place-items: center; width: 20px; height: 20px; border: 1px solid currentColor; border-radius: 50%; font: .62rem 'DM Mono', monospace; }
     .progress-step.active { color: var(--accent); } .progress-step.visited { color: var(--cyan); }
@@ -223,7 +225,7 @@
     .brand-mark { background: #f4a38f; box-shadow: 0 0 18px #f4a38f; }
     .scene-copy { background: rgba(7, 25, 21, .75); border-color: rgba(244,231,189,.32); box-shadow: 8px 8px 0 rgba(244,163,143,.2); }
     .visual-stage { border: 3px solid #132c25; box-shadow: 8px 8px 0 rgba(244,163,143,.18); }
-    @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(3, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } .frame-set { grid-template-columns: 1fr; gap: 16px; } .frame-set p, .frame-set p:nth-child(even) { transform: rotate(0); } }
+    @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(3, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } .progress-step img { width: 29px; height: 29px; } .frame-set { grid-template-columns: 1fr; gap: 16px; } .frame-set p, .frame-set p:nth-child(even) { transform: rotate(0); } }
   </style>
 </head>
 <body>
@@ -240,12 +242,12 @@
     <div>
       <p class="side-kicker">Ruta de la simulación</p>
       <nav class="progress-nav" aria-label="Hitos narrativos">
-        <button class="progress-step active" data-scene="llegada_paramo" onclick="renderEscena('llegada_paramo')"><span>01</span> Llegada</button>
-        <button class="progress-step" data-scene="anulacion_fallida" onclick="renderEscena('anulacion_fallida')"><span>02</span> Rechazo</button>
-        <button class="progress-step" data-scene="debate_logico" onclick="renderEscena('debate_logico')"><span>03</span> Paradoja</button>
-        <button class="progress-step" data-scene="diagnostico_humedad" onclick="renderEscena('diagnostico_humedad')"><span>04</span> Diagnóstico</button>
-        <button class="progress-step" data-scene="mediacion_comunitaria" onclick="renderEscena('mediacion_comunitaria')"><span>05</span> Custodia</button>
-        <button class="progress-step" data-scene="equilibrio_alcanzado" onclick="renderEscena('equilibrio_alcanzado')"><span>06</span> Equilibrio</button>
+        <button class="progress-step active" data-scene="llegada_paramo" onclick="renderEscena('llegada_paramo')"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=120&q=80" alt=""><span>01</span> Llegada</button>
+        <button class="progress-step" data-scene="anulacion_fallida" onclick="renderEscena('anulacion_fallida')"><img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=120&q=80" alt=""><span>02</span> Rechazo</button>
+        <button class="progress-step" data-scene="debate_logico" onclick="renderEscena('debate_logico')"><img src="https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=120&q=80" alt=""><span>03</span> Paradoja</button>
+        <button class="progress-step" data-scene="diagnostico_humedad" onclick="renderEscena('diagnostico_humedad')"><img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=120&q=80" alt=""><span>04</span> Frailejones</button>
+        <button class="progress-step" data-scene="mediacion_comunitaria" onclick="renderEscena('mediacion_comunitaria')"><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=120&q=80" alt=""><span>05</span> Custodia</button>
+        <button class="progress-step" data-scene="equilibrio_alcanzado" onclick="renderEscena('equilibrio_alcanzado')"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=120&q=80" alt=""><span>06</span> Equilibrio</button>
       </nav>
     </div>
     <div class="metadata">
@@ -542,7 +544,10 @@
 
     function iniciarPaisajeSonoro() {
       if (sonidoActivo) return;
-      contextoAudio = contextoAudio || new (window.AudioContext || window.webkitAudioContext)();
+      const ConstructorAudio = window.AudioContext || window.webkitAudioContext;
+      if (!ConstructorAudio) return;
+      contextoAudio = contextoAudio || new ConstructorAudio();
+      if (contextoAudio.state === 'suspended') contextoAudio.resume();
       const salida = contextoAudio.createGain();
       salida.gain.value = .075;
       salida.connect(contextoAudio.destination);
@@ -583,7 +588,9 @@
 
     function detenerPaisajeSonoro() {
       nodosAudio.forEach((nodo) => {
-        if (typeof nodo.stop === 'function') nodo.stop();
+        if (typeof nodo.stop === 'function') {
+          try { nodo.stop(); } catch (error) { }
+        }
         if (typeof nodo.disconnect === 'function') nodo.disconnect();
       });
       nodosAudio = [];
