@@ -626,12 +626,6 @@
       const viento = contextoAudio.createBufferSource();
       const vientoFiltro = contextoAudio.createBiquadFilter();
       const vientoGain = contextoAudio.createGain();
-      const buffer = contextoAudio.createBuffer(1, contextoAudio.sampleRate * 3, contextoAudio.sampleRate);
-      piano.gain.exponentialRampToValueAtTime(.16, contextoAudio.currentTime + .04);
-      piano.gain.exponentialRampToValueAtTime(.001, contextoAudio.currentTime + 2.6);
-      const viento = contextoAudio.createBufferSource();
-      const vientoFiltro = contextoAudio.createBiquadFilter();
-      const vientoGain = contextoAudio.createGain();
       const oleaje = contextoAudio.createOscillator();
       const oleajeGain = contextoAudio.createGain();
       viento.buffer = buffer;
@@ -662,6 +656,7 @@
       viento.start();
       oleaje.start();
       nodosAudio = [viento, oleaje, ...notasPiano, salida];
+      sonidoActivo = true;
       actualizarControlSonoro();
     }
 
