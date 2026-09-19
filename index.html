@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0a0a0a;
@@ -251,6 +252,8 @@
     .story-header h1, h2 { font-family: 'Bricolage Grotesque', 'Manrope', sans-serif; }
     .story-header h1 { max-width: 820px; font-size: clamp(3.2rem, 7vw, 7rem); line-height: .92; color: #f4e7bd; text-shadow: 4px 4px 0 rgba(244,163,143,.2); }
     .story-header p { font-size: 1rem; }
+    .story-header p, .dialogue-bubble, .scene-copy .frame-set p { font-family: 'Newsreader', Georgia, serif; }
+    .story-header p { font-size: 1.2rem; }
     .visual-stage { min-height: clamp(300px, 42vh, 470px); border: 0; border-radius: 22px 4px 22px 4px; box-shadow: 12px 12px 0 rgba(244,163,143,.18), inset 0 0 0 1px rgba(244,231,189,.18); }
     .scene-copy { max-width: 900px; padding: 30px 34px; border: 0; border-radius: 4px 20px 4px 20px; background: rgba(7,25,21,.58); box-shadow: 0 16px 42px rgba(2,12,9,.14); backdrop-filter: blur(9px); }
     .scene-copy, .scene-copy p, .dialogue-bubble, .scene-title { position: relative; z-index: 2; }
@@ -269,6 +272,15 @@
     .inventario-box { border: 0; border-top: 1px solid rgba(244,231,189,.12); border-radius: 0; padding: 20px 0 0; background: transparent; box-shadow: none; }
     .decision-heading { margin-top: 42px; font-family: 'Bricolage Grotesque', 'Manrope', sans-serif; font-size: .9rem; color: #f4e7bd; }
     .opciones button { border-width: 1px; border-radius: 4px 16px 4px 16px; padding-top: 20px; padding-bottom: 20px; }
+    .topbar { border: 0; }
+    .sidebar { background: transparent; border: 0; box-shadow: none; backdrop-filter: none; }
+    .progress-nav { padding-left: 0; }
+    .progress-nav::before, .progress-step::before { display: none; }
+    .progress-step { background: transparent; border-radius: 0; opacity: .58; padding-left: 0; padding-right: 0; }
+    .progress-step:hover, .progress-step.active, .progress-step.visited { background: transparent; opacity: 1; }
+    .metadata, .inventario-box { border: 0; background: transparent; box-shadow: none; }
+    #multimedia-info { background: transparent !important; }
+    .scene-copy { background: rgba(7,25,21,.38); box-shadow: none; }
     @media (max-width: 800px) { .narrative-area { padding-left: 5%; padding-right: 5%; } .story-header h1 { font-size: clamp(3rem, 15vw, 5.5rem); } .sidebar { min-height: auto; } .progress-nav { grid-template-columns: repeat(3, 1fr); padding-left: 0; } .progress-nav::before, .progress-step::before { display: none; } .progress-step { grid-template-columns: 1fr; min-height: 58px; justify-items: center; } .progress-step img { width: 30px; height: 30px; } }
     @media (max-width: 800px) { body { display: block; height: auto; overflow: visible; } .narrative-area { padding: 0 5% 48px; } .story-header { padding: 46px 0 32px; } .story-header h1 { font-size: clamp(2.7rem, 14vw, 4.5rem); } .visual-stage { min-height: 220px; } .progress-nav { grid-template-columns: repeat(3, 1fr); gap: 4px; } .progress-step { grid-template-columns: 1fr; justify-items: center; text-align: center; font-size: .62rem; } .progress-step img { width: 29px; height: 29px; } .frame-set { grid-template-columns: 1fr; gap: 16px; } .frame-set p, .frame-set p:nth-child(even) { transform: rotate(0); } }
   </style>
